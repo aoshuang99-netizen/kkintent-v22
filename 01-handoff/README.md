@@ -65,7 +65,7 @@ without reading the result back.
 | `05-FAILURE-LIBRARY.md` | 28 defects: symptom → cause → the assertion that now guards it |
 | `06-GATE.md` | The gate section by section: what each one proves and how to run it split without lying to yourself |
 | `07-BACKLOG.md` | Open questions and candidate work, each phrased so it can fail |
-| `08-LOCATIONS.md` | **Where v22 is and which URL serves it** — paths, URLs, backups, the fact that there is no git repository, and how to baseline before changing anything |
+| `08-LOCATIONS.md` | **Where v22 is and which URL serves it** — paths, URLs, backups, the repository that now exists and the production directory that still is not one, and how to baseline before changing anything |
 | `AGENTS.md` | Instructions for an agent working in this repository |
 | `code/acceptance.js` | The gate itself, as shipped |
 | `scripts/` | The tools this round actually used: `verify_release.py` (two-way tree comparison), `fetch_origin.py` (hash every path from an origin), the three anchored patch scripts, `click.js` (real-pointer nav chain) and two read-only probes |

@@ -8,8 +8,15 @@ is**, and **which URL serves it**. Every path and every URL below was measured o
 
 ## 0. The answer that decides how you work
 
-**There is no git repository for v22.** Not on the workstation, not on the
-server. Both copies are plain directories of files:
+**As of 2026-10-17 there is one.**
+
+**The repository:** `https://github.com/aoshuang99-netizen/kkintent-v22` — private,
+one commit, the full 117-file archive. Clone it and work from there.
+
+**Until that day** v22 had no git repository. Not on the workstation, not on the
+server. Both copies were plain directories of files, and the measurements below
+were taken then. They are kept because they remain true of the **production
+directory**, which is still outside version control:
 
 ```
 git -C C:\Users\AS\WorkBuddy\20260420163622\kkintent_public rev-parse --is-inside-work-tree
@@ -27,7 +34,7 @@ Consequences, and they are the whole reason this document exists:
   revert. **A revision is identified by content hash, not by SHA of a commit.**
 * "Roll back" means restoring a `cp -a` backup directory (listed in §4), and the
   only way to know what changed is to hash both sides and compare sets.
-* If you want version control, **creating it is a decision, not a step**. Do not
+* **The repository lives outside the web root** (decision taken 2026-10-17). Do not
   `git init` inside `/opt/kk-match/frontend/v22`: nginx serves that directory
   directly, so `.git/` would be publicly fetchable at
   `https://kkmatch.com/v22/.git/config`. Put the repository outside the web root

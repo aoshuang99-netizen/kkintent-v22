@@ -13,7 +13,7 @@
 | 线上地址 | `https://kkmatch.com/v22/`（门口 → 先觉之境）、`https://kkmatch.com/v22/hub/`（三方案 hub） |
 | 分享链接 | `https://kkmatch-gcai-preview.app.workbuddy.host/`（67 文件全量，与本地逐字节一致） |
 | 代码在哪 | 本包 `02-product/`（67 文件）；线上 `/opt/kk-match/frontend/v22`（30 文件，仅被 nginx 服务的部分） |
-| **有没有 git 仓库** | **没有。** 本地与生产端都是纯目录，`git rev-parse` 三处全 fatal。版本身份只能靠 sha256 |
+| **有没有 git 仓库** | **2026-10-17 起有**：`https://github.com/aoshuang99-netizen/kkintent-v22`（私有，单提交，即本包全量）。**在此之前**本地与生产端都是纯目录、`git rev-parse` 三处全 fatal；生产端**至今仍不是**仓库，仍靠 sha256 识版本、`cp -a` 回滚 |
 | 验收结果 | 生产 **587/587 PASS，0 FAIL，33 INFO**（20 段 / 589 条声明，2 条 `shots` 本机跑不了）；分享链接 **536/536 PASS，33 INFO** |
 | 现在最大的卡点 | 产品有 9 条**目前无法诚实声称**的事（`01-handoff/07-BACKLOG.md`），且其中「confidence 未校准」这一条直接动摇产品论点 |
 

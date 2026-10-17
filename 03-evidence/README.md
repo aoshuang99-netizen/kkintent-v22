@@ -13,8 +13,10 @@ immediately before the patch ran). The tenth file of the change set,
 the evidence that it was created rather than moved.
 
 Diff any of these against its counterpart in `02-product/` to see precisely what
-the round did. This is the only "before" that exists: there is no git history
-(see `01-handoff/08-LOCATIONS.md` §0), so a side-by-side is the whole mechanism.
+the round did. This is the only "before" that exists for that round: these bytes were captured
+before any repository existed (see `01-handoff/08-LOCATIONS.md` §0), so a
+side-by-side is the whole mechanism. Copying them into git now would be a
+reconstruction, not a record.
 
 > Note on `before-round8/README.md`: that is the **product's** README in its
 > pre-change state — one of the nine files this round rewrote. It is not a

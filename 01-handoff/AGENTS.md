@@ -6,8 +6,11 @@ Instructions for an agent working on the KK Intent OS preview. Read
 ## Layout
 
 **Where this tree lives, and which URL serves it: `08-LOCATIONS.md`.** Read it
-first — there is no git repository, the served copy is a 30-file subset of this
-67-file tree, and the deployment is a file copy into an nginx `root`. Everything
+first — the served copy is a 30-file subset of this 67-file tree and the
+deployment is a file copy into an nginx `root`, so an edit on the host is live on
+the next request with nothing reviewing it. This tree is under git at
+`https://github.com/aoshuang99-netizen/kkintent-v22`; the host is not, and must
+not be (`git init` there would publish `.git/config`). Everything
 below assumes you know that.
 
 ```
