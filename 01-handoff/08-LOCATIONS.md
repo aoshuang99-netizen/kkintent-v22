@@ -10,8 +10,8 @@ is**, and **which URL serves it**. Every path and every URL below was measured o
 
 **As of 2026-10-17 there is one.**
 
-**The repository:** `https://github.com/aoshuang99-netizen/kkintent-v22` — private,
-one commit, the full 117-file archive. Clone it and work from there.
+**The repository:** `https://github.com/aoshuang99-netizen/kkintent-v22` — public,
+the full 117-file archive. Clone it and work from there; no credentials needed.
 
 **Until that day** v22 had no git repository. Not on the workstation, not on the
 server. Both copies were plain directories of files, and the measurements below
