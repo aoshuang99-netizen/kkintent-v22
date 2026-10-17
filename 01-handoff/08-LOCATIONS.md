@@ -46,7 +46,7 @@ Consequences, and they are the whole reason this document exists:
 
 | | Workstation | Production host |
 |---|---|---|
-| Path | `C:\Users\AS\WorkBuddy\20260420163622\kkintent_public` | `129.211.8.167:/opt/kk-match/frontend/v22` |
+| Path | `C:\Users\AS\WorkBuddy\20260420163622\kkintent_public` | `<SERVER_IP>:/opt/kk-match/frontend/v22` |
 | Role | full source of truth — code **and** gate **and** documents | the subset nginx actually serves |
 | Files | **67** (7,343,948 B) | **30** (1.2 MB) |
 | Contents | `index.html`, `hub/`, `preview/`, `assets/`, `e2e/`, `docs/`, `README.md` | `index.html`, `hub/`, `preview/`, `assets/` |
@@ -77,8 +77,12 @@ simultaneously. Per-file SHA-256 is in `manifests/manifest_local.tsv`.
 
 ### Access
 
+`<SERVER_IP>` is a placeholder. The real address is held by the operator and is
+deliberately **not** in this repository, because this repository is public.
+Ask them for it before running anything that connects.
+
 ```
-host      129.211.8.167
+host      <SERVER_IP>
 user      root           (password held by the operator, not in this package)
 key file  none — password auth
 stack     OpenCloudOS 9.4, kernel 6.6.117-45.oc9, OpenSSH 9.3, nginx 1.26.3

@@ -9,7 +9,7 @@
 - 生成器产物（`voices.html`、`research/*`）**只改生成器**，改线上＝次日被覆盖。
 
 ## 环境
-- 服务器 `129.211.8.167` root/`<REDACTED>`。前端源 `/opt/kk-match/frontend`；后端 `/opt/kk-match/relationship-match-ai/api/`（uvicorn :8001）。
+- 服务器 `<SERVER_IP>` root/`<REDACTED>`。前端源 `/opt/kk-match/frontend`；后端 `/opt/kk-match/relationship-match-ai/api/`（uvicorn :8001）。
 - 远端一律 Bash 调 `python+paramiko`（HOME=临时目录、`look_for_keys=False`、`load_host_keys(<空文件>)`）。Git Bash `/tmp` 与 Windows Python 不互通 → 用 `C:/Users/AS/AppData/Local/Temp/`。
 - 🔴 systemd drop-in 必须 `[Service]`+`Environment=K=V`；写完用 `/proc/<MainPID>/environ` 验证真注入。
 - 🔴 同一 SSH 连接第二条 exec_command 常 EOFError → 合并单条或独立重连；**高频重连会被限流**（实测 direct-tcpip 通道被掐、隧道失效）。

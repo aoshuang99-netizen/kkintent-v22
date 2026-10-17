@@ -22,7 +22,7 @@
     {
       "role": "served",
       "kind": "remote-directory",
-      "host": "129.211.8.167",
+      "host": "<SERVER_IP>",
       "path": "/opt/kk-match/frontend/v22",
       "files": 30,
       "served_by": "nginx, root /opt/kk-match/frontend, location ^~ /v22/",
