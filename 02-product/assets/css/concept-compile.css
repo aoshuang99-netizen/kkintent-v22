@@ -1,0 +1,141 @@
+/* ============================================================================
+   KK Intent OS · concept N — compile / 编译之境
+   Reference debts (all of them are patterns, none of them is a copy):
+     .n-console   the "one question, one frame" opening
+     .n-rail      a terminal-style compile log with real progress, not a video
+     .n-node      staggered assembly of a dependency graph
+   ========================================================================== */
+
+/* ------------------------------------------------------------------ frame */
+.n-console {
+  width: min(100%, 660px);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+.n-core-title {
+  font-size: var(--fs-28);
+  line-height: 1.24;
+  letter-spacing: -0.01em;
+  font-weight: 800;
+}
+.n-core-title span { display: block; }
+.n-core-title .sub {
+  margin-top: var(--s-2);
+  font-size: var(--fs-14);
+  font-weight: 400;
+  line-height: var(--lh-body);
+  color: var(--text-soft);
+}
+.n-frame-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2) var(--s-3);
+}
+.n-err {
+  display: none;
+  align-items: center;
+  gap: var(--s-2);
+  font-size: var(--fs-12);
+  color: var(--signal);
+}
+.n-err[data-show="true"] { display: flex; }
+.n-seeds { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.n-seed {
+  max-width: 100%;
+  min-height: var(--touch);
+  text-align: left;
+  white-space: normal;
+  line-height: 1.4;
+  font-weight: 400;
+  font-size: var(--fs-12);
+  color: var(--text-soft);
+  border-radius: var(--r-m);
+}
+.n-seed:hover { color: var(--text); }
+.n-result {
+  border-top: 1px solid var(--line);
+  padding-top: var(--s-4);
+  display: none;
+}
+.n-result[data-show="true"] { display: block; }
+
+/* --------------------------------------------------------------- pipeline */
+.n-pipe {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: var(--s-5);
+  align-items: start;
+}
+.n-rail { display: flex; flex-direction: column; gap: var(--s-2); }
+.n-node {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--s-3);
+  padding: var(--s-3);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--line-strong);
+  border-radius: var(--r-s);
+  background: color-mix(in srgb, var(--elev) 34%, transparent);
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.n-node[data-state="done"] { border-left-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, transparent); }
+.n-node[data-state="blocked"] { border-left-color: var(--text-faint); opacity: .72; }
+.n-node[data-approval="true"] { border-top: 1px dashed color-mix(in srgb, var(--warn) 60%, transparent); }
+.n-node[data-selected="true"] { outline: var(--focus-w) solid var(--accent); outline-offset: 1px; }
+.n-node__idx {
+  font-family: var(--f-mono);
+  font-size: var(--fs-12);
+  color: var(--text-faint);
+  padding-top: 2px;
+}
+.n-node__title { font-size: var(--fs-14); font-weight: 650; }
+.n-node__detail { font-size: var(--fs-12); color: var(--text-soft); margin-top: 2px; }
+.n-node__meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: var(--s-2); }
+.n-node__acts { display: flex; gap: var(--s-2); }
+.n-node__acts .btn { font-size: var(--fs-12); padding: 0 var(--s-3); }
+.n-pipe-side { display: flex; flex-direction: column; gap: var(--s-4); }
+.n-inspector-row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s-3);
+  padding: var(--s-2) 0;
+  border-bottom: 1px solid var(--line);
+  font-size: var(--fs-12);
+}
+.n-inspector-row span:first-child { color: var(--text-faint); }
+.n-inspector-row span:last-child { font-family: var(--f-mono); text-align: right; overflow-wrap: anywhere; }
+
+/* ------------------------------------------------------------------ log */
+.n-log { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: var(--s-5); align-items: start; }
+.n-list { display: flex; flex-direction: column; gap: var(--s-2); }
+.n-item {
+  border: 1px solid var(--line);
+  border-radius: var(--r-s);
+  padding: var(--s-3);
+  background: color-mix(in srgb, var(--elev) 30%, transparent);
+}
+.n-item__head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); }
+.n-item__title { font-size: var(--fs-14); font-weight: 600; }
+.n-item__body { font-size: var(--fs-12); color: var(--text-soft); margin-top: 4px; overflow-wrap: anywhere; }
+.n-item__notes { margin-top: var(--s-2); display: flex; flex-direction: column; gap: 2px; }
+.n-item__notes li { font-size: var(--fs-12); color: var(--text-faint); }
+.n-legend { font-size: var(--fs-12); color: var(--text-faint); margin-top: var(--s-2); }
+.n-empty { font-size: var(--fs-12); color: var(--text-faint); }
+
+@media (max-width: 1023px) {
+  .n-pipe, .n-log { grid-template-columns: minmax(0, 1fr); }
+}
+/* Wide screens: the console becomes a left column and the assembled network
+   gets the rest of the stage, so nodes never sit on top of the input text. */
+@media (min-width: 1024px) {
+  .n-console { margin-left: 0; width: min(100%, 620px); }
+}
+@media (max-width: 719px) {
+  .n-node { grid-template-columns: 24px minmax(0, 1fr); }
+  .n-node__acts { grid-column: 1 / -1; }
+  .n-node__acts .btn { flex: 1 1 auto; }
+}

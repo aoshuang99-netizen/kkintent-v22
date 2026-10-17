@@ -1,0 +1,179 @@
+/* ============================================================================
+   KK Intent OS · base layer
+   Reset + accessibility floor. No concept-specific rules live here.
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg, #070A10);
+  color: var(--text, #F2F6FA);
+  font-family: var(--f-sans);
+  font-size: var(--fs-16);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- touch behaviour: the app contract, stated once ----------------------
+   `manipulation` on the root is the intersection baseline for the whole tree
+   (touch-action is intersected with every ancestor), so it grants immediate
+   tap delivery — no 300 ms double-tap-to-zoom wait — while still allowing
+   pan and pinch-zoom. A descendant can only ever narrow this, never widen it,
+   so `touch-action: none` on a drag handle keeps working. */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+body {
+  min-height: 100vh;
+  /* The field canvas is fixed; the OS shell scrolls above it.
+     `clip`, not `hidden`: on Chrome `overflow-x: hidden` makes <body> a scroll
+     container, and a ScrollTrigger pin then measures position:fixed against the
+     wrong box. `clip` refuses the overflow without creating a scroller, so
+     <html> stays the only one. */
+  overflow-x: clip;
+}
+
+/* ---- modal scroll lock ---------------------------------------------------
+   A sheet is modal in behaviour, so the page behind it must not move: with the
+   document still live, a finger on the sheet's edge drags the whole page and
+   that reads as a broken app, not as a sheet.
+
+   Locking by `overflow: hidden` alone would clamp the offset to 0 and jump the
+   page to the top, so the body is pinned instead and `top` carries the saved
+   offset (set by os.js). Restoring the offset on unlock puts the reader back
+   exactly where they were. */
+html[data-locked="true"] {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+html[data-locked="true"] body {
+  position: fixed;
+  left: 0;
+  right: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Independent scrollers must not hand their overscroll to the page. */
+.sheet,
+.term,
+[data-scroll-contain] { overscroll-behavior: contain; }
+
+/* ---- deep links must not land under the fixed bar ------------------------
+   Every surface publishes its own bar height as --stick-offset; without this a
+   `#section` jump parks the heading behind the glass bar. */
+[id] { scroll-margin-top: calc(var(--stick-offset, 96px) + var(--s-4, 16px)); }
+
+h1, h2, h3, p, ul, ol, figure { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { color: var(--text); }
+
+button, input, textarea, select { font: inherit; color: inherit; }
+
+/* ---- visible focus, always ---- */
+:focus-visible {
+  outline: var(--focus-w) solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---- every interactive control clears 44px ---- */
+.btn {
+  min-height: var(--touch);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  padding: 0 var(--s-4);
+  border: 1px solid var(--line);
+  border-radius: var(--r-s);
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: var(--fs-14);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease), transform var(--dur-fast) var(--ease);
+}
+.btn:hover { border-color: var(--line-strong); }
+.btn:active { transform: translateY(1px); }
+.btn[disabled], .btn[aria-disabled="true"] { opacity: .5; cursor: not-allowed; }
+
+.btn--primary {
+  background: var(--accent);
+  border-color: transparent;
+  color: var(--accent-ink);
+}
+.btn--primary:hover { filter: brightness(1.06); border-color: transparent; }
+
+.btn--ghost { background: transparent; }
+
+/* Footer nav — the way back out of each surface.
+   Every item is a .btn, so it already clears 44px; wrapping (not overflowing)
+   is what keeps this usable at 320px now that each page carries two links.
+   Added in round 7: the two concept pages had no exit at all, so a reader who
+   arrived from the homepage could only leave with the browser's Back button. */
+.footnav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  margin-bottom: var(--s-5);
+}
+
+/* Text links that act as controls still need a 44px hit area. */
+.linkbtn {
+  min-height: var(--touch);
+  display: inline-flex;
+  align-items: center;
+  padding: 0 var(--s-2);
+  background: none;
+  border: 0;
+  color: var(--accent);
+  cursor: pointer;
+  text-align: left;
+}
+.linkbtn:hover { text-decoration: underline; }
+
+/* ---- a11y helpers ---- */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+.skip-link {
+  position: absolute; left: 50%; top: -100px; transform: translateX(-50%);
+  z-index: var(--z-toast);
+  background: var(--accent); color: var(--accent-ink);
+  padding: var(--s-3) var(--s-4); border-radius: var(--r-s);
+  font-size: var(--fs-14); font-weight: 700; text-decoration: none;
+  transition: top var(--dur) var(--ease);
+}
+.skip-link:focus { top: 8px; }
+
+/* ---- shared type utilities ---- */
+.eyebrow {
+  font-family: var(--f-mono);
+  font-size: var(--fs-12);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.lead { font-size: var(--fs-16); color: var(--text-soft); }
+.mono { font-family: var(--f-mono); font-size: var(--fs-12); }
+
+/* ---- reduced motion: kill every transition, the field stops drifting ---- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

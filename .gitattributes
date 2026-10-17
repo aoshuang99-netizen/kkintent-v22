@@ -1,0 +1,17 @@
+# This repository is a *released artefact*, not a source tree under active merge.
+# Every file below is byte-verified against the live origin by sha256, and the
+# archive's own MANIFEST.sha256.txt records those hashes. Any end-of-line
+# normalisation on checkout would silently break that equality: a file would
+# arrive with the right text and the wrong hash, and the only symptom would be
+# a manifest check failing on a machine that never touched the file.
+#
+# So: no conversion, in either direction, for anything.
+* -text
+
+# Explicit, for readability -- `-text` above already covers them.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.woff2 binary
+*.woff  binary
+*.ico   binary

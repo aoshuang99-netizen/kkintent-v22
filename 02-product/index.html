@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en-US" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<!-- This root is a DOOR, not a document.
+
+     It forwards to concept S -- the intent field -- because that is the
+     direction that was chosen. The three-surface hub still exists, unchanged,
+     at ./hub/: every preview page links back to it, and the hub links on to
+     kkmatch.com.
+
+     Two consequences are deliberate, and both are asserted in
+     e2e/acceptance.js rather than described here:
+
+       * `noindex, follow`, and no canonical of its own. A page that navigates
+         away in the same tick has no content to rank; the canonical belongs
+         to the document a crawler should keep, which after the hop is
+         /preview/intent/anticipate/.
+
+       * the query string is forwarded verbatim. i18n.js reads `?lang=` once,
+         at boot, on the page that finally renders -- so a door that drops the
+         query would silently force the default language on a reviewer who was
+         handed a Chinese link.
+
+     No external script tag, no stylesheet, no canvas: this page must render in
+     one round trip and must not depend on any file in the bundle. If the
+     bundle were broken, the door would still open the door. -->
+<meta name="robots" content="noindex, follow">
+<link rel="icon" href="data:,">
+<title>KKmatch Intent OS &mdash; opening the intent field</title>
+<meta name="description" content="Entry point for the KKmatch Intent OS preview. It opens on the intent field (concept S, the chosen direction); the three-surface hub and the archived reference are one click from there.">
+<noscript><meta http-equiv="refresh" content="0; url=preview/intent/anticipate/"></noscript>
+<script>
+/* location.replace, not assign: a door must not become a step in the history,
+   or pressing Back would bounce the reader forward into the same hop again. */
+(function () {
+  'use strict';
+  location.replace('preview/intent/anticipate/' + (location.search || '') + (location.hash || ''));
+})();
+</script>
+<style>
+  html { color-scheme: dark; }
+  body {
+    margin: 0; min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 18px; background: #0B0F14; color: #E6EDF3;
+    font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  p { margin: 0; max-width: 44ch; padding: 0 24px; text-align: center; }
+  .door__zh { display: block; color: #A6B2C2; }
+  .door__go {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 44px; padding: 0 22px; border-radius: 999px;
+    border: 1px solid #2A3442; color: #E6EDF3; text-decoration: none;
+  }
+  .door__go:hover, .door__go:focus-visible { border-color: #A78BFA; color: #C4B5FD; }
+</style>
+</head>
+<body>
+  <p>
+    <span lang="en">Opening the intent field&hellip;</span>
+    <span class="door__zh" lang="zh-CN">&#27491;&#22312;&#25171;&#24320;&#24847;&#22270;&#22330;&hellip;</span>
+  </p>
+  <p><a class="door__go" href="preview/intent/anticipate/"><span lang="en">Continue</span> &middot; <span lang="zh-CN">&#32487;&#32493;</span></a></p>
+</body>
+</html>

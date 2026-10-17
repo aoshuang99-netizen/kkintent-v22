@@ -1,0 +1,159 @@
+/* ============================================================================
+   KK Intent OS · hub page
+   ========================================================================== */
+
+.hub-top {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-hud);
+  display: flex;
+  /* Safety valve, not the layout. The bar is built to hold one row down to
+     320 px (icon-only actions below), and `flex-wrap` is kept so a freak long
+     translation degrades to a second row instead of pushing the layout
+     viewport wider than the device — an un-wrappable row does not get
+     narrower, it renders the whole page zoomed out. The gate asserts one row
+     at every tested width, so a wrap is now a detected failure rather than a
+     silent degradation. */
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2) var(--s-3);
+  padding: var(--s-3) var(--gutter);
+  border-bottom: 1px solid var(--line);
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+}
+@supports not ((backdrop-filter: blur(2px)) or (-webkit-backdrop-filter: blur(2px))) {
+  .hub-top { background: var(--bg-deep); }
+}
+/* App-bar title. It is the only grower and it truncates — that is what lets
+   the trailing actions stay put instead of wrapping. It must never win the
+   tug-of-war: a title that pushes a control off the edge is the bug this
+   replaced, so it gives up width first and stops being the flex-grow target.
+
+   `flex-basis: 0` is load-bearing, not cosmetic. With `flex-wrap: wrap`, the
+   line-breaking pass assigns items to lines using their *hypothetical* main
+   sizes, before any shrinking happens. A title whose basis is its content
+   width therefore claims a whole line by itself and pushes every action onto
+   a second row — measured: 2 rows at 320 px with a 380-character wordmark,
+   even though the title was ultimately truncated to 292 px anyway. Giving the
+   title a zero basis makes it fit alongside the actions on the first pass and
+   then grow into whatever is left. The separate spacer this replaced is gone:
+   with the title growing, a spacer only added two more 12 px gaps. */
+.hub-top__brand {
+  font-weight: 900;
+  letter-spacing: .06em;
+  font-size: var(--fs-14);
+  flex: 1 1 0;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hub-top__brand small { font-family: var(--f-mono); font-weight: 400; font-size: var(--fs-12); color: var(--text-faint); letter-spacing: 0; }
+
+/* ------------------------------------------------------------ app-bar actions
+   Material 3 puts utility actions in icon buttons of at least 48 dp; Apple's
+   HIG asks for 44 pt. 44 px is the stricter of the two that this codebase
+   already treats as its floor (`--touch`), so the phone form is a 44x44 icon
+   button and the desktop form is the same button with its text label showing.
+
+   The visible label is a real element rather than a hidden string, for two
+   reasons: the accessible name comes from aria-label (via data-i18n-aria) so
+   it survives the text being hidden, and hub.js can rewrite the *state* text
+   without erasing the icon — it used to assign textContent straight onto the
+   button, which wipes every child. */
+.iconbtn { gap: 6px; }
+.iconbtn .ic { display: inline-flex; width: 20px; height: 20px; flex: 0 0 auto; }
+.iconbtn .ic > svg { width: 100%; height: 100%; display: block; }
+.iconbtn__s { display: none; }                       /* compact label, phone only */
+/* sound: exactly one of the two glyphs is ever painted */
+.iconbtn[data-sound="off"] .ic__on { display: none; }
+.iconbtn[data-sound="on"] .ic__off { display: none; }
+
+.hub {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: var(--s-7) var(--gutter) var(--s-8);
+}
+.hub h1 { font-size: var(--fs-28); line-height: 1.26; letter-spacing: -0.01em; }
+.hub h2 { font-size: var(--fs-20); line-height: var(--lh-tight); }
+.hub h3 { font-size: var(--fs-16); }
+.hub p { color: var(--text-soft); max-width: 74ch; }
+.hub .lead { font-size: var(--fs-16); }
+
+/* min(320px, 100%) — a bare 320px floor is a floor *below* a 360/390 px
+   viewport once the gutters are subtracted, and any grid whose track floor is
+   wider than the container overflows instead of shrinking. */
+.hub-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: var(--s-4); }
+.hub-card { display: flex; flex-direction: column; gap: var(--s-3); }
+.hub-card h3 { font-size: var(--fs-20); }
+.hub-card ul { display: flex; flex-direction: column; gap: 6px; }
+.hub-card li { font-size: var(--fs-12); color: var(--text-soft); display: flex; gap: var(--s-2); }
+.hub-card li::before { content: "→"; color: var(--accent); }
+.hub-card .btn { align-self: flex-start; }
+
+.audit { display: flex; flex-direction: column; gap: var(--s-3); }
+.audit-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); margin-bottom: var(--s-3); }
+.audit-head h3 { flex: 1 1 auto; }
+.kv { display: grid; grid-template-columns: 148px minmax(0, 1fr); gap: var(--s-2) var(--s-4); padding: var(--s-2) 0; border-top: 1px solid var(--line); }
+.kv__k { font-family: var(--f-mono); font-size: var(--fs-12); color: var(--text-faint); }
+.kv__v { font-size: var(--fs-12); color: var(--text-soft); }
+.kv__v strong { color: var(--text); }
+
+.duo { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: var(--s-4); }
+.duo ul { display: flex; flex-direction: column; gap: var(--s-2); }
+.duo li { font-size: var(--fs-12); color: var(--text-soft); display: flex; gap: var(--s-2); }
+.duo li::before { content: "·"; color: var(--accent); flex: 0 0 auto; }
+.duo--drop li::before { color: var(--signal); }
+
+.split { width: 100%; border-collapse: collapse; font-size: var(--fs-12); }
+.split th, .split td { text-align: left; padding: var(--s-3); border-bottom: 1px solid var(--line); vertical-align: top; }
+.split th { font-family: var(--f-mono); color: var(--text-faint); font-weight: 600; }
+.split td { color: var(--text-soft); }
+.split td:first-child { color: var(--text-faint); font-family: var(--f-mono); white-space: nowrap; }
+
+.chip[data-verdict="falsified"] { border-color: color-mix(in srgb, var(--signal) 62%, transparent); color: var(--signal); }
+.chip[data-verdict="unverified"] { border-color: color-mix(in srgb, var(--warn) 62%, transparent); color: var(--warn); }
+.chip[data-verdict="partial"] { border-color: var(--line-strong); color: var(--text); }
+
+@media (max-width: 719px) {
+  /* Single-row app bar. The wordmark's suffix goes first, then the action
+     labels — but only the labels: every control stays on screen, which is the
+     difference between this and hiding one to make the row fit. */
+  .hub-top__brand small { display: none; }
+  .hub-top .iconbtn { width: 44px; min-width: 44px; padding: 0; gap: 0; }
+  .hub-top .iconbtn__t { display: none; }
+  /* The language action keeps a compact visible code: a bare globe would show
+     no state at all, and this is a two-state toggle whose whole job is to say
+     what you would get if you pressed it. It stays at the 12px type floor —
+     an 11px version was written first and the type-floor assertion caught it,
+     which is the assertion doing its job. */
+  .hub-top .iconbtn--code { gap: 3px; }
+  .hub-top .iconbtn--code .ic { width: 15px; height: 15px; }
+  .hub-top .iconbtn--code .iconbtn__s { display: inline; font-size: var(--fs-12); font-weight: 700; letter-spacing: 0; }
+  .kv { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .kv__k { margin-top: var(--s-2); }
+  .split thead { display: none; }
+  .split tr { display: block; margin-bottom: var(--s-4); }
+  .split td { display: block; border: 0; padding: 2px 0; }
+  .split td:first-child { white-space: normal; margin-bottom: 6px; }
+}
+
+/* ------------------------------------------------- the five decisions table */
+/* Same table as the concept split, but the answer cell carries a second line.
+   Kept to three columns on purpose: a fourth "checked by" column with prose
+   in it is unreadable at 1024px, so the evidence line lives under the answer. */
+[data-testid="hub-decisions"] .split td:nth-child(2) { color: var(--text); }.dec-where {
+  margin: var(--s-3) 0 0;
+  padding-top: var(--s-2);
+  border-top: 1px dashed var(--line);
+  font-family: var(--f-mono);
+  font-size: var(--fs-12);
+  color: var(--text-faint);
+}
+.dec-where span:first-child::after { content: ":"; }
+.dec-where span:first-child { color: var(--text-soft); margin-right: 2px; }
+
+.hub-card[data-status="chosen"] { border-color: var(--line-strong); }
+.hub-card[data-status="frozen"] { opacity: .86; }

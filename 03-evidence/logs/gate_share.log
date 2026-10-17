@@ -1,0 +1,35 @@
+### hub,lang
+{"total":60,"pass":60,"fail":0,"unsupported":0,"info":0,"ms":45781}
+exit=0
+### n,s,cross
+{"total":150,"pass":150,"fail":0,"unsupported":0,"info":5,"ms":17082}
+exit=0
+### sound,contract,retain
+{"total":47,"pass":47,"fail":0,"unsupported":0,"info":0,"ms":15474}
+exit=0
+### site,rm,fb
+FAIL  site.desktop.noConsoleErrors  ["console.error: THREE.WebGLRenderer: A WebGL context could not be created. Reason:  Could not create a WebGL context, VENDOR = 0x10de, DEVICE = 0x1d01, GL_VERSION = 32.0.15.6094, Sandboxed = no, Optimus = no, AMD switch
+FAIL  site.RM.noConsoleErrors  ["console.error: THREE.WebGLRenderer: A WebGL context could not be created. Reason:  Could not create a WebGL context, VENDOR = 0x10de, DEVICE = 0x1d01, GL_VERSION = 32.0.15.6094, Sandboxed = no, Optimus = no, AMD switch
+{"total":53,"pass":51,"fail":2,"unsupported":0,"info":0,"ms":15880}
+exit=1
+### widths
+{"total":16,"pass":16,"fail":0,"unsupported":0,"info":4,"ms":18623}
+exit=0
+### appbar
+{"total":21,"pass":21,"fail":0,"unsupported":0,"info":0,"ms":24700}
+exit=0
+### mob,zoom
+{"total":75,"pass":75,"fail":0,"unsupported":0,"info":4,"ms":17651}
+exit=0
+### touch
+GATE CRASHED Error: ENOSPC: no space left on device, write
+    at Object.writeFileSync (node:fs:2430:20)
+    at Object.wrappedWriteFileSync [as writeFileSync] (C:\Users\AS\AppData\Local\Programs\WorkBuddy\resources\app.asar.unpacked\cli\vendor\shim\node-brokered-fs-shim.cjs:664:20)
+    at C:\Users\AS\WorkBuddy\20260420163622\kkintent_public\e2e\acceptance.js:2771:6 {
+  errno: -4055,
+  code: 'ENOSPC',
+  syscall: 'write'
+}
+exit=2
+### navclosure
+exit=2

@@ -1,0 +1,515 @@
+/* ============================================================================
+   KK Intent OS · shell  (shared by compile / anticipate / hub)
+
+   Layers, in order (the brief's three migration steps, made explicit):
+     step 1  visual mount  ->  .field-canvas          z-index 1
+     step 2  HUD rebuild   ->  .hud / .hud-sheet      z-index 100
+     step 3  intent frame  ->  .composer              z-index 10
+   ========================================================================== */
+
+/* One place decides where the fixed bar starts and where it ends. .hud,
+   .viewnav, .shell and .stage all read these two, so no two of them can
+   disagree about the band the bar occupies — the classic source of a heading
+   hidden behind a glass bar on a notched phone. --safe-t is 0 unless the page
+   declares viewport-fit=cover, which every surface now does. */
+:root {
+  --hud-top: calc(var(--hud-inset) + var(--safe-t));
+  --hud-end: calc(var(--hud-top) + var(--hud-h));
+  /* --hud-end and --nav-h are overwritten from the live boxes by os.js the
+     moment the bar wraps or the nav grows a row. The declarations here are the
+     pre-boot values, not the truth. */
+  --nav-h: 0px;
+  --stick-offset: calc(var(--hud-end) + var(--s-2) + var(--nav-h));
+}
+
+/* ---------------------------------------------------------------- 1 · FIELD */
+.field-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: var(--z-field);
+  pointer-events: none;   /* never eats a click */
+  display: block;
+}
+/* Honest fallback: when WebGL is unavailable we say so, we do not fake it. */
+.field-fallback { display: none; }
+body[data-field-backend="css-fallback"] .field-canvas { display: none; }
+body[data-field-backend="css-fallback"] .field-fallback {
+  display: block;
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-field);
+  pointer-events: none;
+  background:
+    radial-gradient(70% 55% at 50% 4%, color-mix(in srgb, var(--field-a) 42%, transparent) 0%, transparent 68%),
+    radial-gradient(50% 40% at 82% 88%, color-mix(in srgb, var(--field-b) 22%, transparent) 0%, transparent 70%),
+    var(--bg-deep);
+}
+
+/* ------------------------------------------------------------------- 2 · HUD */
+.hud {
+  position: fixed;
+  top: var(--hud-top);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(92vw, 1500px);
+  min-height: var(--hud-h);
+  z-index: var(--z-hud);
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: var(--s-2) var(--s-4);
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--r-full);
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(24px) saturate(1.2);
+  backdrop-filter: blur(24px) saturate(1.2);
+  box-shadow: var(--shadow-3);
+}
+/* If the engine cannot blur (or the user asked for less transparency) the bar
+   must still be readable — opaque fallback, never text over a live canvas. */
+@supports not ((backdrop-filter: blur(2px)) or (-webkit-backdrop-filter: blur(2px))) {
+  .hud { background: var(--bg-deep); }
+}
+
+.hud__brand {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-2);
+  font-weight: 900;
+  letter-spacing: .06em;
+  font-size: var(--fs-16);
+  white-space: nowrap;
+}
+.hud__brand small {
+  font-family: var(--f-mono);
+  font-size: var(--fs-12);
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--text-faint);
+}
+.hud__spacer { flex: 1 1 auto; min-width: var(--s-2); }
+
+.hud__group {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: 0 var(--s-3);
+  min-height: var(--touch);
+  border: 1px solid var(--line);
+  border-radius: var(--r-full);
+  background: color-mix(in srgb, var(--elev) 46%, transparent);
+}
+.pulse {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+  flex: 0 0 auto;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+.pulse[data-state="idle"] { background: var(--text-faint); box-shadow: none; animation: none; }
+.pulse[data-state="busy"] { background: var(--warn); box-shadow: 0 0 10px var(--warn); }
+@keyframes pulse { 0%, 100% { opacity: .45; } 50% { opacity: 1; } }
+
+.hud__label { font-family: var(--f-mono); font-size: var(--fs-12); color: var(--text-faint); white-space: nowrap; }
+
+.hud select {
+  min-height: var(--touch);
+  background: transparent;
+  border: 0;
+  border-radius: var(--r-s);
+  font-family: var(--f-mono);
+  font-size: var(--fs-12);
+  color: var(--text);
+  cursor: pointer;
+  max-width: 34ch;
+}
+.hud select option { background: var(--bg-deep); color: var(--text); }
+
+.hud__account {
+  min-height: var(--touch);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: 0 var(--s-3);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--r-full);
+  background: none;
+  color: var(--text-soft);
+  font-family: var(--f-mono);
+  font-size: var(--fs-12);
+  cursor: pointer;
+}
+.hud__account:hover { color: var(--text); }
+
+/* The compact HUD button only appears on narrow viewports. */
+.hud__compact { display: none; }
+
+/* ----------------------------------------------------------------- 3 · STAGE */
+.shell {
+  position: relative;
+  z-index: var(--z-stage);
+  padding-top: calc(var(--hud-end) + var(--s-5));
+}
+
+/* View nav sits in the flow so it can stick, and keeps 44px targets. It is
+   deliberately NOT in the HUD: the brief asks for a quiet bar. */
+.viewnav {
+  position: sticky;
+  top: calc(var(--hud-end) + var(--s-2));
+  z-index: 90;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--s-2);
+  padding: 0 var(--gutter) var(--s-3);
+  max-width: 1560px;
+  margin: 0 auto;
+}
+.viewnav .btn { border-radius: var(--r-full); }
+.viewnav .btn[aria-current="page"] {
+  border-color: var(--line-strong);
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--text);
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  max-width: 1560px;
+  margin: 0 auto;
+  padding: var(--s-4) var(--gutter) calc(var(--s-8) + var(--safe-b));
+}
+.stage--full {
+  min-height: calc(100vh - var(--hud-end) - 160px);
+  min-height: calc(100dvh - var(--hud-end) - 160px);
+  display: flex;
+  align-items: center;
+  padding-top: var(--s-5);
+}
+
+/* Footer column: same measure as the stage, holds the boundary panel so a
+   view re-render can never wipe it. */
+.footwrap {
+  position: relative;
+  z-index: var(--z-stage);
+  max-width: 1560px;
+  margin: 0 auto;
+  padding: 0 var(--gutter) calc(var(--s-7) + var(--safe-b));
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  padding: var(--s-5);
+  min-width: 0;
+}
+.card--flush { padding: 0; overflow: hidden; }
+
+.section { margin-bottom: var(--s-7); }
+.section > h2 {
+  font-size: var(--fs-20);
+  line-height: var(--lh-tight);
+  margin-bottom: var(--s-3);
+}
+.section > p { color: var(--text-soft); max-width: 68ch; }
+
+/* -------------------------------------------------------------- COMPOSER */
+.composer { display: flex; flex-direction: column; gap: var(--s-4); }
+
+.composer__frame {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: var(--r-m);
+  background: color-mix(in srgb, var(--elev) 30%, transparent);
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.composer__frame[data-signal="calm"]   { border-color: var(--line-strong); }
+.composer__frame[data-signal="alert"]  { border-color: var(--signal); box-shadow: 0 0 28px color-mix(in srgb, var(--signal) 26%, transparent); }
+.composer__frame[data-signal="ready"]  { border-color: var(--accent); box-shadow: 0 0 28px color-mix(in srgb, var(--accent) 22%, transparent); }
+
+.composer__input,
+.composer__ghost {
+  font-family: var(--f-sans);
+  font-size: var(--fs-14);
+  line-height: 1.65;
+  padding: var(--s-4);
+  width: 100%;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.composer__input {
+  display: block;
+  min-height: 116px;
+  background: transparent;
+  border: 0;
+  border-radius: var(--r-m);
+  resize: vertical;
+  outline: none;
+}
+.composer__input::placeholder { color: var(--text-faint); }
+
+/* Ghost-text overlay: a real mirror of the textarea's box model so the
+   prediction sits exactly where the user will type it. */
+.composer__ghost {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: color-mix(in srgb, var(--text) 24%, transparent);
+  overflow: hidden;
+}
+.composer__ghost[hidden] { display: none; }
+.composer__ghost .typed { color: transparent; }
+.composer__ghost .tail::after {
+  content: "";
+  display: inline-block;
+  width: 2px; height: 1em;
+  margin-left: 2px;
+  vertical-align: -2px;
+  background: color-mix(in srgb, var(--text) 40%, transparent);
+}
+
+.composer__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2) var(--s-3);
+}
+
+/* Signal read-out: the visual language is always explained in words too. */
+.chips { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 2px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-full);
+  background: color-mix(in srgb, var(--elev) 40%, transparent);
+  font-family: var(--f-mono);
+  font-size: var(--fs-12);
+  color: var(--text-soft);
+}
+.chip b { color: var(--text); font-weight: 600; }
+.chip[data-tone="accent"] { border-color: var(--line-strong); color: var(--text); }
+.chip[data-tone="warn"]   { border-color: color-mix(in srgb, var(--warn) 60%, transparent); color: var(--warn); }
+.chip[data-tone="signal"] { border-color: color-mix(in srgb, var(--signal) 60%, transparent); color: var(--signal); }
+
+/* ------------------------------------------------------------- TERMINAL */
+.term {
+  font-family: var(--f-mono);
+  font-size: var(--fs-12);
+  line-height: 1.7;
+  background: color-mix(in srgb, var(--bg-deep) 78%, transparent);
+  border: 1px solid var(--line);
+  border-radius: var(--r-s);
+  padding: var(--s-4);
+  max-height: 260px;
+  overflow: auto;
+  overflow-wrap: anywhere;
+}
+.term__line { display: flex; gap: var(--s-2); margin-bottom: 4px; transition: opacity var(--dur) var(--ease); }
+.term__line[data-revealed="false"] { opacity: .22; }
+.term__mark { flex: 0 0 auto; width: 6ch; color: var(--text-faint); }
+.term__line[data-status="ok"]   .term__mark { color: var(--accent); }
+.term__line[data-status="demo"] .term__mark { color: var(--warn); }
+.term__line[data-status="none"] .term__mark { color: var(--signal); }
+.term__text { min-width: 0; color: var(--text-soft); }
+.term__line[data-status="ok"] .term__text { color: var(--text); }
+.term__empty { color: var(--text-faint); }
+
+/* ------------------------------------------------------------- BOUNDARY */
+.boundary { border: 1px solid var(--line); border-radius: var(--r-m); background: var(--surface); }
+.boundary > summary {
+  min-height: var(--touch);
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: 0 var(--s-4);
+  cursor: pointer;
+  font-size: var(--fs-14);
+  font-weight: 600;
+  list-style: none;
+}
+.boundary > summary::-webkit-details-marker { display: none; }
+.boundary > summary::before { content: "▸"; color: var(--accent); }
+.boundary[open] > summary::before { content: "▾"; }
+.boundary__body { padding: 0 var(--s-4) var(--s-4); }
+.boundary table { width: 100%; border-collapse: collapse; font-size: var(--fs-12); }
+.boundary th, .boundary td {
+  text-align: left;
+  padding: var(--s-3) var(--s-2);
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+.boundary th { color: var(--text-faint); font-weight: 600; white-space: nowrap; }
+.boundary td { color: var(--text-soft); }
+.boundary code { font-family: var(--f-mono); font-size: var(--fs-12); color: var(--text); overflow-wrap: anywhere; }
+
+/* Below the tablet breakpoint a 3-column table cannot fit: capability names
+   like `emotion.microexpression` set a min-content floor wider than a 390px
+   screen, which made the panel overflow horizontally once it was opened.
+   The measured sweep caught it at 320/360/390/430. */
+@media (max-width: 719px) {
+  .boundary thead { display: none; }
+  .boundary tr { display: block; padding: var(--s-3) 0; border-bottom: 1px solid var(--line); }
+  .boundary tr:last-child { border-bottom: 0; }
+  .boundary th, .boundary td { display: block; border: 0; padding: 1px 0; white-space: normal; }
+}
+
+/* ------------------------------------------------------- SHEET / TOASTS */
+.sheet {
+  position: fixed;
+  z-index: var(--z-sheet);
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%) translateY(102%);
+  width: min(96vw, 560px);
+  max-height: 80vh;
+  max-height: 80dvh;   /* dvh so a retracting mobile toolbar cannot clip it */
+  overflow: auto;
+  /* the grab handle below is a touch affordance, not a scroll area */
+  touch-action: pan-y;
+  padding: var(--s-5) var(--s-4) calc(var(--s-5) + var(--safe-b));
+  border: 1px solid var(--glass-edge);
+  border-bottom: 0;
+  border-radius: var(--r-l) var(--r-l) 0 0;
+  background: var(--bg-deep);
+  box-shadow: var(--shadow-3);
+  transition: transform var(--dur-slow) var(--ease);
+}
+.sheet--confirm { z-index: calc(var(--z-sheet) + 1); }
+.sheet[data-open="true"] { transform: translateX(-50%) translateY(0); }
+/* While the finger owns the sheet the transform must track it exactly: a CSS
+   transition would lag behind the gesture and feel like lag, not like drag. */
+.sheet[data-dragging="true"] { transition: none; }
+
+/* The grab handle is the affordance that says "this thing moves". Without it a
+   swipe-to-dismiss is undiscoverable, and a sheet that only closes on a button
+   reads as a web panel. */
+.sheet::before {
+  content: "";
+  display: block;
+  width: 44px;
+  height: 4px;
+  margin: calc(var(--s-3) * -1) auto var(--s-4);
+  border-radius: var(--r-full);
+  background: var(--line-strong);
+}
+.sheet__head { display: flex; align-items: center; gap: var(--s-3); margin-bottom: var(--s-4); }
+.sheet__head h2 { font-size: var(--fs-16); flex: 1 1 auto; }
+.sheet__field { display: flex; flex-direction: column; gap: var(--s-2); margin-bottom: var(--s-4); }
+.sheet__field > span { font-family: var(--f-mono); font-size: var(--fs-12); color: var(--text-faint); }
+.sheet select, .sheet .btn { min-height: var(--touch); width: 100%; }
+.sheet select {
+  padding: 0 var(--s-3);
+  border: 1px solid var(--line);
+  border-radius: var(--r-s);
+  background: var(--elev);
+}
+.scrim {
+  position: fixed; inset: 0; z-index: calc(var(--z-sheet) - 1);
+  background: rgba(0, 0, 0, .58);
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--dur) var(--ease);
+}
+.scrim[data-open="true"] { opacity: 1; pointer-events: auto; }
+
+.toaster {
+  position: fixed;
+  z-index: var(--z-toast);
+  left: 50%; bottom: calc(var(--s-5) + var(--safe-b));
+  transform: translateX(-50%);
+  width: min(92vw, 620px);
+  display: flex; flex-direction: column; gap: var(--s-2);
+  pointer-events: none;
+}
+.toast {
+  pointer-events: auto;
+  border: 1px solid var(--line-strong);
+  border-left: 3px solid var(--warn);
+  border-radius: var(--r-s);
+  background: var(--bg-deep);
+  box-shadow: var(--shadow-2);
+  padding: var(--s-3) var(--s-4);
+  font-size: var(--fs-14);
+}
+.toast[data-tone="ok"] { border-left-color: var(--accent); }
+.toast[data-tone="deny"] { border-left-color: var(--signal); }
+.toast strong { display: block; font-size: var(--fs-12); font-family: var(--f-mono); color: var(--text-faint); margin-bottom: 2px; }
+
+/* -------------------------------------------------------------- FOOTNOTE */
+.footnote {
+  margin-top: var(--s-6);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line);
+  color: var(--text-faint);
+  font-size: var(--fs-12);
+}
+.footnote a { color: var(--text-soft); }
+
+/* ======================================================= RESPONSIVE (9 stops)
+   320 / 360 / 390 / 430 / 600 / 768 / 1024 / 1280 / 1600 — zero overflow.
+   ======================================================================== */
+@media (max-width: 1023px) {
+  .hud { width: min(94vw, 1500px); }
+  .hud__quiet { display: none; }        /* decorative labels only */
+}
+
+@media (max-width: 719px) {
+  :root { --hud-h: 56px; --hud-inset: 12px; --gutter: 16px; }
+  .hud { border-radius: var(--r-l); padding: var(--s-1) var(--s-3); }
+  .hud__group, .hud__account { display: none; }   /* collapse into the sheet */
+  /* A phone header is ONE row. The wordmark keeps its name and drops the
+     decorative suffix, and Sound / Language leave the bar — but they are not
+     removed: both live in the console sheet one tap away, which already
+     carries sound-btn-mobile and lang-btn-mobile. That is the same move the
+     scenario group and the account chip above already make.
+
+     Keeping them forced a second row (measured: the bar was 110px tall at
+     390px and 122px at 430px, and at 430 the sticky view nav was placed at
+     92px — i.e. underneath it). Hiding the two buttons puts the bar back on
+     one line at every width down to 320px. */
+  .hud__brand small { display: none; }
+  .hud > [data-testid="sound-btn"],
+  .hud > [data-testid="lang-btn"] { display: none; }
+  .hud__compact { display: inline-flex; margin-left: auto; }
+  .stage { padding-top: calc(var(--hud-end) + var(--s-5)); }
+  .card { padding: var(--s-4); }
+  .core-title { font-size: var(--fs-28) !important; }
+}
+
+@media (max-width: 430px) {
+  :root { --gutter: 14px; }
+}
+
+/* 200% text zoom (WCAG 1.4.4): nothing may clip or overlap. At that size the
+   bar legitimately needs two rows — and that is now safe, because os.js
+   measures the bar's real bottom into --hud-end, so .shell and .viewnav follow
+   it instead of a token that assumed one row. */
+@media (min-resolution: 1dppx) and (max-width: 640px) {
+  .hud { flex-wrap: wrap; }
+}
+
+/* Forced colours / high contrast: keep the OS legible without glass. */
+@media (forced-colors: active) {
+  .hud, .card, .sheet, .term { background: Canvas; border-color: CanvasText; }
+}
+
+/* Transparency-killing preferences must not cost readability. */
+@media (prefers-reduced-transparency: reduce) {
+  .hud, .card, .term, .composer__frame { background: var(--bg-deep); backdrop-filter: none; }
+}
+
+/* Print: the field is decoration, drop it. */
+@media print {
+  .field-canvas, .field-fallback, .hud, .scrim, .toaster { display: none !important; }
+}

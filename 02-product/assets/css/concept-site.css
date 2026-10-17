@@ -1,0 +1,286 @@
+/* ============================================================================
+   意图操作系统 · long-scroll surface
+
+   This file is the FIRST consumer of ScrollTrigger in the project, so it is
+   also where the "is this even a scrolling page?" question gets answered:
+   yes — a marketing document is a scroll, and that is the only reason the
+   dependency is here (see docs/DECISIONS.md §4).
+
+   Two rules that shape everything below:
+
+   1. CONTENT IS VISIBLE WITHOUT JS.
+      Every reveal is expressed as `[data-st="on"] .reveal { opacity: 0 ... }`.
+      With no ScrollTrigger, no JS, or reduced motion, `data-st` is never set
+      to "on", the hidden state never applies, and the whole page reads
+      normally. A marketing page that is blank when a script fails is a bug
+      we can avoid at the CSS layer instead of by remembering to handle it.
+
+   2. THE PINNED SEQUENCE DEGRADES INTO A LIST.
+      The four steps are one `<ol>`. Pinned, ScrollTrigger scrubs a highlight
+      through them. Unpinned, every step is simply visible and legible.
+   ========================================================================== */
+
+/* --------------------------------------------------------------- progress */
+/* base.css already clips overflow-x on <body>; this restates it for the one
+   page that pins. `clip` matters here specifically: with `hidden` Chrome makes
+   <body> a scroll container and ScrollTrigger then measures the pinned
+   position:fixed box against the wrong element. Same overflow refused, no
+   scroll container created, pins measure the viewport again. */
+body[data-concept="site"] { overflow-x: clip; }
+
+/* base.css publishes --stick-offset from the OS HUD tokens; this page has no
+   HUD, it has a rail. Note the scope: --rail-h is declared on the CONCEPT
+   scope in tokens.css, not on :root, so a :root declaration here would fail to
+   resolve and silently fall back to base.css's 96px guess. */
+[data-concept="site"] { --stick-offset: calc(var(--rail-h) + var(--safe-t)); }
+
+.st-rail {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: calc(var(--rail-h) + var(--safe-t));
+  z-index: var(--z-hud);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  padding: var(--safe-t) var(--gutter) 0;
+  gap: var(--s-3);
+  background: linear-gradient(to bottom, rgba(5, 4, 8, .86), rgba(5, 4, 8, 0));
+}
+.st-rail__brand {
+  font-size: var(--fs-16);
+  font-weight: 600;
+  letter-spacing: .01em;
+  color: var(--text);
+}
+/* The rail is an overlay, so it stays inert by default — but `pointer-events`
+   is inherited, and that made every control in it dead: Sound and the language
+   switch could not be tapped at all (a real `locator.tap()` timed out after
+   4 s). Only the interactors are re-armed; the spacer and the progress track
+   stay transparent to clicks. */
+.st-rail__brand,
+.st-rail button,
+.st-rail a,
+.st-rail select { pointer-events: auto; }
+/* <small> defaults to 0.833em, which put this at 11.67px — below the project's
+   own 12px floor. The floor wins over the browser default. */
+.st-rail__brand small { color: var(--text-faint); font-weight: 400; font-size: var(--fs-12); }
+.st-rail__spacer { flex: 1 1 auto; }
+.st-rail__spacer, .st-rail > * { position: relative; z-index: 1; }
+.st-rail__track {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 2px;
+  background: var(--line);
+}
+.st-rail__bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform-origin: 0 50%;
+}
+
+/* ------------------------------------------------------------------- shell */
+.st-main {
+  position: relative;
+  z-index: var(--z-stage);
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: calc(var(--rail-h) + var(--safe-t) + var(--s-7)) var(--gutter) calc(var(--s-8) + var(--safe-b));
+}
+
+.st-sec {
+  position: relative;
+  padding: var(--s-8) 0;
+  border-top: 1px solid var(--line);
+}
+.st-sec:first-of-type { border-top: 0; }
+.st-sec__eyebrow {
+  font-family: var(--f-mono);
+  font-size: var(--fs-12);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  display: block;
+  margin-bottom: var(--s-3);
+}
+.st-sec h2 {
+  font-size: var(--fs-28);
+  line-height: var(--lh-tight);
+  margin: 0 0 var(--s-4);
+  max-width: var(--read);
+}
+.st-sec p {
+  max-width: var(--read);
+  color: var(--text-soft);
+  line-height: var(--lh-body);
+  margin: 0 0 var(--s-4);
+}
+.st-sec p:last-child { margin-bottom: 0; }
+
+/* -------------------------------------------------------------------- hero */
+.st-hero { padding-top: var(--s-6); }
+.st-hero h1 {
+  font-size: var(--fs-44);
+  line-height: var(--lh-tight);
+  margin: 0 0 var(--s-4);
+  max-width: 22ch;
+}
+.st-hero h1 .sub {
+  display: block;
+  font-size: var(--fs-20);
+  font-weight: 400;
+  color: var(--text-soft);
+  margin-top: var(--s-3);
+  max-width: var(--read);
+}
+.st-hero__lede {
+  font-size: var(--fs-16);
+  color: var(--text-soft);
+  max-width: var(--read);
+  line-height: var(--lh-body);
+  margin: 0 0 var(--s-5);
+}
+.st-hero__cta { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-bottom: var(--s-5); }
+
+/* the one live thing above the fold — and it is the real adapter */
+.st-demo {
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  padding: var(--s-4);
+  backdrop-filter: blur(14px);
+  max-width: 760px;
+}
+.st-demo__label {
+  font-family: var(--f-mono);
+  font-size: var(--fs-12);
+  color: var(--text-faint);
+  display: block;
+  margin-bottom: var(--s-2);
+}
+.st-demo__frame { position: relative; }
+.st-demo__ghost {
+  position: absolute;
+  inset: 0;
+  padding: 12px 14px;
+  font: inherit;
+  font-size: var(--fs-16);
+  line-height: var(--lh-body);
+  white-space: pre-wrap;
+  word-break: break-word;
+  pointer-events: none;
+  overflow: hidden;
+}
+.st-demo__ghost .typed { color: var(--text); }
+.st-demo__ghost .tail { color: var(--accent); opacity: .78; }
+.st-demo__row { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; margin-top: var(--s-3); }
+.st-demo__out {
+  font-family: var(--f-mono);
+  font-size: var(--fs-12);
+  color: var(--text-faint);
+  margin-top: var(--s-2);
+}
+
+/* --------------------------------------------------------------- the steps */
+.st-steps { list-style: none; margin: 0; padding: 0; counter-reset: st; }
+.st-step {
+  counter-increment: st;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: var(--s-4);
+  padding: var(--s-4) 0;
+  border-top: 1px solid var(--line);
+  transition: opacity var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.st-step:first-child { border-top: 0; }
+.st-step::before {
+  content: counter(st, decimal-leading-zero);
+  font-family: var(--f-mono);
+  font-size: var(--fs-20);
+  color: var(--text-faint);
+  line-height: 1.2;
+}
+.st-step h3 { font-size: var(--fs-16); margin: 0 0 var(--s-2); }
+.st-step p { margin: 0; color: var(--text-soft); font-size: var(--fs-14); max-width: var(--read); }
+/* The scrubbed state. Only ever set while the pin is active. */
+[data-st="on"] .st-step[data-active="true"] { border-color: var(--line-strong); }
+[data-st="on"] .st-step[data-active="true"]::before { color: var(--accent); }
+
+.st-pin { position: relative; }
+
+/* ------------------------------------------------------------ reveal rules */
+/* Hidden states exist ONLY under [data-st="on"] — that is the no-JS contract. */
+[data-st="on"] .reveal {
+  opacity: 0;
+  transform: translate3d(0, 18px, 0);
+  transition: opacity 620ms var(--ease), transform 620ms var(--ease);
+}
+[data-st="on"] .reveal[data-revealed="true"] {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* --------------------------------------------------------------- the grid */
+.st-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: var(--s-4);
+}
+.st-card {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  padding: var(--s-4);
+}
+.st-card h3 { font-size: var(--fs-16); margin: 0 0 var(--s-3); }
+.st-card p { font-size: var(--fs-14); margin: 0; }
+.st-card--warn { border-color: rgba(244, 190, 107, .34); }
+
+/* ------------------------------------------------------------- the contract */
+.st-contract { border-collapse: collapse; width: 100%; font-size: var(--fs-14); }
+.st-contract th, .st-contract td {
+  text-align: left;
+  padding: var(--s-3) var(--s-3) var(--s-3) 0;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+.st-contract th { font-weight: 600; color: var(--text); }
+.st-contract td { color: var(--text-soft); }
+/* The weights column prints a JSON object. Without a break opportunity that is
+   one 60-character unbreakable token, and it pushed the table 125px past the
+   viewport at 320px. `anywhere` gives it somewhere to wrap. */
+.st-contract code { color: var(--accent-2); overflow-wrap: anywhere; }
+
+/* -------------------------------------------------------------- footer nav */
+.st-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  padding-top: var(--s-6);
+  border-top: 1px solid var(--line);
+}
+.st-fineprint {
+  color: var(--text-faint);
+  font-size: var(--fs-12);
+  font-family: var(--f-mono);
+  max-width: var(--read);
+  margin-top: var(--s-4);
+}
+
+/* ------------------------------------------------------------------ mobile */
+@media (max-width: 719px) {
+  .st-step { grid-template-columns: 34px 1fr; gap: var(--s-3); }
+  .st-hero h1 { max-width: none; }
+  .st-contract thead { display: none; }
+  .st-contract tr { display: block; padding: var(--s-3) 0; border-bottom: 1px solid var(--line); }
+  .st-contract tr:last-child { border-bottom: 0; }
+  .st-contract th, .st-contract td { display: block; border: 0; padding: 1px 0; white-space: normal; }
+}
+
+/* Reduced motion: ScrollTrigger is not created at all, and even if a stale
+   `data-st` survived, nothing here animates. */
+@media (prefers-reduced-motion: reduce) {
+  [data-st="on"] .reveal,
+  [data-st="on"] .reveal[data-revealed="true"] { opacity: 1; transform: none; transition: none; }
+  .st-step { transition: none; }
+}

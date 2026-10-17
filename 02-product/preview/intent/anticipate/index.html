@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en-US" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:,">
+<title data-i18n="s.docTitle">Intent Field — KKmatch Intent OS (preview, concept S)</title>
+<meta name="description" content="Preview concept S: a field that predicts the rest of your sentence, and an orbit board with real spring physics. All data is DEMO/SANDBOX.">
+<link rel="canonical" href="https://kkmatch.com/v22/preview/intent/anticipate/">
+
+<link rel="stylesheet" href="../../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../../assets/css/base.css">
+<link rel="stylesheet" href="../../../assets/css/os.css">
+<link rel="stylesheet" href="../../../assets/css/concept-anticipate.css">
+</head>
+<body data-concept="anticipate" data-view="field" data-field-backend="idle">
+
+<a class="skip-link" href="#stage" data-i18n="s.skip">Skip to the intent field</a>
+
+<!-- layer 1 · the field -->
+<canvas id="field" class="field-canvas" aria-hidden="true"></canvas>
+<div class="field-fallback" aria-hidden="true"></div>
+
+<!-- layer 100 · HUD -->
+<header class="hud" data-testid="hud"></header>
+
+<div class="shell">
+  <nav class="viewnav" data-testid="view-nav" aria-label="Concept views"></nav>
+  <!-- layer 10 · the 2D stage -->
+  <main class="stage" id="stage" data-testid="stage" tabindex="-1"></main>
+</div>
+
+<footer class="footwrap">
+  <nav class="footnav" aria-label="Preview links">
+    <a class="btn btn--ghost" href="../../../hub/" data-i18n="s.nav.back">Back to the hub</a>
+    <a class="btn btn--ghost" href="../compile/" data-i18n="s.nav.other">Open the archived reference</a>
+    <a class="btn btn--ghost" href="https://kkmatch.com/" data-i18n="common.home">Back to kkmatch.com</a>
+  </nav>
+  <details class="boundary" data-testid="boundary">
+    <summary data-i18n="boundary.title">What is real here</summary>
+    <div class="boundary__body" data-testid="boundary-body"></div>
+  </details>
+  <p class="footnote">
+    Concept S · <strong>anticipate</strong> — part of the KKmatch Intent OS preview.
+    <span data-i18n="common.previewTag">PREVIEW · DEMO DATA</span>
+  </p>
+</footer>
+
+<!-- overlays -->
+<div class="scrim" data-testid="scrim"></div>
+<aside class="sheet" data-testid="hud-sheet" data-open="false" role="dialog" aria-modal="false" aria-label="Console"></aside>
+<aside class="sheet sheet--confirm" data-testid="confirm-sheet" data-open="false" role="dialog" aria-modal="true"></aside>
+<div class="toaster" data-testid="toaster" aria-live="polite"></div>
+
+<noscript>
+  <p style="padding:96px 20px;max-width:60ch;margin:0 auto;color:#B3AAC6">
+    This preview is a client-side application. It needs JavaScript, and with
+    JavaScript off it deliberately shows nothing rather than a fake screen.
+  </p>
+</noscript>
+
+<script src="../../../assets/vendor/three.min.js" defer></script>
+<script src="../../../assets/vendor/gsap.min.js" defer></script>
+<script src="../../../assets/js/i18n.js" defer></script>
+<script src="../../../assets/js/i18n-shared.js" defer></script>
+<script src="../../../assets/js/i18n-anticipate.js" defer></script>
+<script src="../../../assets/js/store.js" defer></script>
+<script src="../../../assets/js/adapters.js" defer></script>
+<script src="../../../assets/js/field.js" defer></script>
+<script src="../../../assets/js/sound.js" defer></script>
+<script src="../../../assets/js/os.js" defer></script>
+<script src="../../../assets/js/concept-anticipate.js" defer></script>
+</body>
+</html>

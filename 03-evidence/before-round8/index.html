@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en-US" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:,">
+<title data-i18n="hub.docTitle">KKmatch Intent OS — direction chosen (preview)</title>
+<meta name="description" content="Two new interaction design previews for KKmatch, plus an audited verdict on the five reference sites in the brief. All data is DEMO/SANDBOX.">
+<link rel="canonical" href="https://kkmatch.com/v22/">
+
+<link rel="stylesheet" href="assets/css/tokens.css">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/os.css">
+<link rel="stylesheet" href="assets/css/hub.css">
+</head>
+<body data-concept="hub" data-field-backend="idle">
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<canvas id="field" class="field-canvas" aria-hidden="true"></canvas>
+<div class="field-fallback" aria-hidden="true"></div>
+
+<header class="hub-top">
+  <span class="hub-top__brand">KKmatch <small data-i18n="hud.brandSub">· Intent OS (preview)</small></span>
+
+  <a class="btn btn--ghost iconbtn" href="preview/site/" data-testid="open-site-top"
+     data-i18n-aria="hub.nav.site" data-i18n-title="hub.nav.site">
+    <span class="ic" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5.25 2.75h6L15 6.5v10.75h-9.75z"/><path d="M11.1 2.8v3.8h3.8"/><path d="M7.6 10.6h4.8M7.6 13.4h4.8"/></svg></span>
+    <span class="iconbtn__t" data-i18n="hub.nav.site">Long-scroll page</span>
+  </a>
+
+  <button class="btn btn--ghost iconbtn" type="button" data-testid="sound-btn"
+          data-sound="off" aria-pressed="false" data-i18n-aria="sound.aria">
+    <span class="ic" aria-hidden="true"><svg class="ic__on" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.75 3.6 6.4 7.25H3.6v5.5h2.8l4.35 3.65z"/><path d="M13.5 7.6a3.4 3.4 0 0 1 0 4.8"/><path d="M15.8 5.5a6.4 6.4 0 0 1 0 9"/></svg><svg class="ic__off" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.75 3.6 6.4 7.25H3.6v5.5h2.8l4.35 3.65z"/><path d="M13.4 7.9 17.6 12.1M17.6 7.9 13.4 12.1"/></svg></span>
+    <span class="iconbtn__t" data-sound-label data-i18n="sound.off">Sound: off</span>
+  </button>
+
+  <button class="btn btn--ghost iconbtn iconbtn--code" type="button" data-testid="lang-btn"
+          data-i18n-aria="hud.langAria" data-i18n-title="hud.lang">
+    <span class="ic" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7.1"/><path d="M3.1 10h13.8"/><ellipse cx="10" cy="10" rx="3.1" ry="7.1"/></svg></span>
+    <span class="iconbtn__t" data-i18n="hud.lang">中文</span>
+    <span class="iconbtn__s" data-i18n="hud.langShort">中</span>
+  </button>
+</header>
+
+<main class="hub" id="main">
+
+  <section class="section">
+    <span class="eyebrow" data-i18n="hub.eyebrow"></span>
+    <h1 data-testid="hub-h1" data-i18n="hub.title"></h1>
+    <p class="lead" style="margin-top:var(--s-3)" data-i18n="hub.h1"></p>
+    <p style="margin-top:var(--s-3)" data-i18n="hub.lead"></p>
+  </section>
+
+  <section class="section" data-testid="hub-concepts">
+    <h2 data-i18n="hub.cards.h2"></h2>
+    <div class="hub-cards" style="margin-top:var(--s-4)">
+      <article class="card hub-card" data-concept-card="n" data-testid="card-n" data-status="frozen">
+        <header class="audit-head">
+          <h3 data-i18n="hub.n.name"></h3>
+          <span class="chip" data-tone="warn" data-testid="status-n" data-i18n="hub.status.frozen"></span>
+        </header>
+        <p data-i18n="hub.n.one"></p>
+        <ul>
+          <li data-i18n="hub.n.points"></li>
+        </ul>
+        <p data-i18n="hub.n.frozenNote"></p>
+        <a class="btn" href="preview/intent/compile/" data-testid="open-n" data-i18n="hub.n.open"></a>
+      </article>
+      <article class="card hub-card" data-concept-card="s" data-testid="card-s" data-status="chosen">
+        <header class="audit-head">
+          <h3 data-i18n="hub.s.name"></h3>
+          <span class="chip" data-tone="accent" data-testid="status-s" data-i18n="hub.status.chosen"></span>
+        </header>
+        <p data-i18n="hub.s.one"></p>
+        <ul>
+          <li data-i18n="hub.s.points"></li>
+        </ul>
+        <p data-i18n="hub.s.chosenNote"></p>
+        <a class="btn btn--primary" href="preview/intent/anticipate/" data-testid="open-s" data-i18n="hub.s.open"></a>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" data-testid="hub-decisions">
+    <h2 data-i18n="hub.dec.h2"></h2>
+    <p style="margin-top:var(--s-3)" data-i18n="hub.dec.lead"></p>
+    <table class="split" style="margin-top:var(--s-4)">
+      <thead>
+        <tr>
+          <th data-i18n="hub.dec.col.n"></th>
+          <th data-i18n="hub.dec.col.q"></th>
+          <th data-i18n="hub.dec.col.a"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr data-decision="1">
+          <td>1</td>
+          <td data-i18n="hub.dec.q1"></td>
+          <td>
+            <p data-i18n="hub.dec.a1"></p>
+            <p class="dec-where"><span data-i18n="hub.dec.col.where"></span> <span data-i18n="hub.dec.w1"></span></p>
+          </td>
+        </tr>
+        <tr data-decision="2">
+          <td>2</td>
+          <td data-i18n="hub.dec.q2"></td>
+          <td>
+            <p data-i18n="hub.dec.a2"></p>
+            <p class="dec-where"><span data-i18n="hub.dec.col.where"></span> <span data-i18n="hub.dec.w2"></span></p>
+          </td>
+        </tr>
+        <tr data-decision="3">
+          <td>3</td>
+          <td data-i18n="hub.dec.q3"></td>
+          <td>
+            <p data-i18n="hub.dec.a3"></p>
+            <p class="dec-where"><span data-i18n="hub.dec.col.where"></span> <span data-i18n="hub.dec.w3"></span></p>
+          </td>
+        </tr>
+        <tr data-decision="4">
+          <td>4</td>
+          <td data-i18n="hub.dec.q4"></td>
+          <td>
+            <p data-i18n="hub.dec.a4"></p>
+            <p class="dec-where"><span data-i18n="hub.dec.col.where"></span> <span data-i18n="hub.dec.w4"></span></p>
+          </td>
+        </tr>
+        <tr data-decision="5">
+          <td>5</td>
+          <td data-i18n="hub.dec.q5"></td>
+          <td>
+            <p data-i18n="hub.dec.a5"></p>
+            <p class="dec-where"><span data-i18n="hub.dec.col.where"></span> <span data-i18n="hub.dec.w5"></span></p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin-top:var(--s-4)" data-i18n="hub.dec.full"></p>
+    <p style="margin-top:var(--s-4)">
+      <a class="btn btn--primary" href="preview/site/" data-testid="open-site" data-i18n="hub.dec.openSite"></a>
+    </p>
+  </section>
+
+  <section class="section" data-testid="hub-audit">
+    <h2 data-i18n="hub.audit.h2"></h2>
+    <p style="margin-top:var(--s-3)" data-i18n="hub.audit.lead"></p>
+    <div class="audit" style="margin-top:var(--s-5)">
+
+      <article class="card" data-ref="cerebrium">
+        <header class="audit-head">
+          <h3 data-i18n="hub.ref.cerebrium"></h3>
+          <span class="chip" data-verdict="falsified" data-testid="verdict-cerebrium" data-i18n="hub.a1.verdict"></span>
+        </header>
+        <div class="kv"><span class="kv__k" data-i18n="hub.audit.col.claim"></span><p class="kv__v" data-i18n="hub.a1.claim"></p></div>
+        <div class="kv"><span class="kv__k" data-i18n="hub.audit.col.found"></span><p class="kv__v" data-i18n="hub.a1.found"></p></div>
+        <div class="kv"><span class="kv__k" data-i18n="hub.audit.col.kept"></span><p class="kv__v" data-i18n="hub.a1.kept"></p></div>
+      </article>
+
+      <article class="card" data-ref="cosmos">
+        <header class="audit-head">
+          <h3 data-i18n="hub.ref.cosmos"></h3>
+          <span class="chip" data-verdict="partial" data-testid="verdict-cosmos" data-i18n="hub.a2.verdict"></span>
+        </header>
+        <div class="kv"><span class="kv__k" data-i18n="hub.audit.col.claim"></span><p class="kv__v" data-i18n="hub.a2.claim"></p></div>
+        <div class="kv"><span class="kv__k" data-i18n="hub.audit.col.found"></span><p class="kv__v" data-i18n="hub.a2.found"></p></div>
+        <div class="kv"><span class="kv__k" data-i18n="hub.audit.col.kept"></span><p class="kv__v" data-i18n="hub.a2.kept"></p></div>
+      </article>
+
+      <article class="card" data-ref="framer">
+        <header class="audit-head">
+          <h3 data-i18n="hub.ref.framer"></h3>
+          <span class="chip" data-verdict="unverified" data-testid="verdict-framer" data-i18n="hub.a3.verdict"></span>
+        </header>
+        <div class="kv"><span class="kv__k" data-i18n="hub.audit.col.claim"></span><p class="kv__v" data-i18n="hub.a3.claim"></p></div>
+        <div class="kv"><span class="kv__k" data-i18n="hub.audit.col.found"></span><p class="kv__v" data-i18n="hub.a3.found"></p></div>
+        <div class="kv"><span class="kv__k" data-i18n="hub.audit.col.kept"></span><p class="kv__v" data-i18n="hub.a3.kept"></p></div>
+      </article>
+
+      <article class="card" data-ref="v0">
+        <header class="audit-head">
+          <h3 data-i18n="hub.ref.v0"></h3>
+          <span class="chip" data-verdict="unverified" data-testid="verdict-v0" data-i18n="hub.a4.verdict"></span>
+        </header>
+        <div class="kv"><span class="kv__k" data-i18n="hub.audit.col.claim"></span><p class="kv__v" data-i18n="hub.a4.claim"></p></div>
+        <div class="kv"><span class="kv__k" data-i18n="hub.audit.col.found"></span><p class="kv__v" data-i18n="hub.a4.found"></p></div>
+        <div class="kv"><span class="kv__k" data-i18n="hub.audit.col.kept"></span><p class="kv__v" data-i18n="hub.a4.kept"></p></div>
+      </article>
+
+      <article class="card" data-ref="activeTheory">
+        <header class="audit-head">
+          <h3 data-i18n="hub.ref.activeTheory"></h3>
+          <span class="chip" data-verdict="unverified" data-testid="verdict-active" data-i18n="hub.a5.verdict"></span>
+        </header>
+        <div class="kv"><span class="kv__k" data-i18n="hub.audit.col.claim"></span><p class="kv__v" data-i18n="hub.a5.claim"></p></div>
+        <div class="kv"><span class="kv__k" data-i18n="hub.audit.col.found"></span><p class="kv__v" data-i18n="hub.a5.found"></p></div>
+        <div class="kv"><span class="kv__k" data-i18n="hub.audit.col.kept"></span><p class="kv__v" data-i18n="hub.a5.kept"></p></div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="section" data-testid="hub-source">
+    <h2 data-i18n="hub.src.h2"></h2>
+    <p style="margin-top:var(--s-3)" data-i18n="hub.src.lead"></p>
+
+    <div class="audit" style="margin-top:var(--s-5)">
+      <article class="card">
+        <div class="kv"><span class="kv__k" data-i18n="hub.src.col.def"></span><p class="kv__v" data-i18n="hub.src.d1"></p></div>
+        <div class="kv"><span class="kv__k" data-i18n="hub.src.col.why"></span><p class="kv__v" data-i18n="hub.src.d1w"></p></div>
+      </article>
+      <article class="card">
+        <div class="kv"><span class="kv__k" data-i18n="hub.src.col.def"></span><p class="kv__v" data-i18n="hub.src.d2"></p></div>
+        <div class="kv"><span class="kv__k" data-i18n="hub.src.col.why"></span><p class="kv__v" data-i18n="hub.src.d2w"></p></div>
+      </article>
+      <article class="card">
+        <div class="kv"><span class="kv__k" data-i18n="hub.src.col.def"></span><p class="kv__v" data-i18n="hub.src.d3"></p></div>
+        <div class="kv"><span class="kv__k" data-i18n="hub.src.col.why"></span><p class="kv__v" data-i18n="hub.src.d3w"></p></div>
+      </article>
+      <article class="card">
+        <div class="kv"><span class="kv__k" data-i18n="hub.src.col.def"></span><p class="kv__v" data-i18n="hub.src.d4"></p></div>
+        <div class="kv"><span class="kv__k" data-i18n="hub.src.col.why"></span><p class="kv__v" data-i18n="hub.src.d4w"></p></div>
+      </article>
+      <article class="card">
+        <div class="kv"><span class="kv__k" data-i18n="hub.src.col.def"></span><p class="kv__v" data-i18n="hub.src.d5"></p></div>
+        <div class="kv"><span class="kv__k" data-i18n="hub.src.col.why"></span><p class="kv__v" data-i18n="hub.src.d5w"></p></div>
+      </article>
+      <article class="card">
+        <div class="kv"><span class="kv__k" data-i18n="hub.src.col.def"></span><p class="kv__v" data-i18n="hub.src.d6"></p></div>
+        <div class="kv"><span class="kv__k" data-i18n="hub.src.col.why"></span><p class="kv__v" data-i18n="hub.src.d6w"></p></div>
+      </article>
+      <article class="card">
+        <div class="kv"><span class="kv__k" data-i18n="hub.src.col.def"></span><p class="kv__v" data-i18n="hub.src.d7"></p></div>
+        <div class="kv"><span class="kv__k" data-i18n="hub.src.col.why"></span><p class="kv__v" data-i18n="hub.src.d7w"></p></div>
+      </article>
+    </div>
+
+    <div class="duo" style="margin-top:var(--s-5)">
+      <div class="card">
+        <h3 data-i18n="hub.src.keptH"></h3>
+        <ul style="margin-top:var(--s-3)">
+          <li data-i18n="hub.src.kept1"></li>
+          <li data-i18n="hub.src.kept2"></li>
+          <li data-i18n="hub.src.kept3"></li>
+          <li data-i18n="hub.src.kept4"></li>
+        </ul>
+      </div>
+      <div class="card duo--drop">
+        <h3 data-i18n="hub.src.dropH"></h3>
+        <ul style="margin-top:var(--s-3)">
+          <li data-i18n="hub.src.drop1"></li>
+          <li data-i18n="hub.src.drop2"></li>
+          <li data-i18n="hub.src.drop3"></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-testid="hub-split">
+    <h2 data-i18n="hub.split.h2"></h2>
+    <table class="split" style="margin-top:var(--s-4)">
+      <thead>
+        <tr><th></th><th data-i18n="hub.split.col.n"></th><th data-i18n="hub.split.col.s"></th></tr>
+      </thead>
+      <tbody>
+        <tr><td>one line</td><td data-i18n="hub.split.r1"></td><td data-i18n="hub.split.r1s"></td></tr>
+        <tr><td>core verbs</td><td data-i18n="hub.split.r2"></td><td data-i18n="hub.split.r2s"></td></tr>
+        <tr><td>views</td><td data-i18n="hub.split.r3"></td><td data-i18n="hub.split.r3s"></td></tr>
+        <tr><td>honesty device</td><td data-i18n="hub.split.r4"></td><td data-i18n="hub.split.r4s"></td></tr>
+        <tr><td>signature</td><td data-i18n="hub.split.r5"></td><td data-i18n="hub.split.r5s"></td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:var(--s-4)" data-i18n="hub.split.shared"></p>
+  </section>
+
+  <section class="section" data-testid="hub-demo">
+    <h2 data-i18n="hub.demo.h2"></h2>
+    <p style="margin-top:var(--s-3)" data-i18n="hub.demo.p"></p>
+  </section>
+
+  <details class="boundary" data-testid="boundary" style="margin-top:var(--s-6)">
+    <summary data-i18n="boundary.title">What is real here</summary>
+    <div class="boundary__body" data-testid="boundary-body"></div>
+  </details>
+
+  <nav class="footnav" aria-label="Site links">
+    <a class="btn btn--ghost" href="https://kkmatch.com/" data-i18n="hub.nav.home">Back to kkmatch.com</a>
+  </nav>
+
+  <p class="footnote" data-i18n="hub.foot"></p>
+
+</main>
+
+<noscript>
+  <p style="padding:40px 20px;max-width:60ch;margin:0 auto;color:#A6B2C2">
+    This page needs JavaScript to render its text in both languages.
+  </p>
+</noscript>
+
+<script src="assets/vendor/three.min.js" defer></script>
+<script src="assets/js/i18n.js" defer></script>
+<script src="assets/js/i18n-shared.js" defer></script>
+<script src="assets/js/i18n-hub.js" defer></script>
+<script src="assets/js/store.js" defer></script>
+<script src="assets/js/adapters.js" defer></script>
+<script src="assets/js/field.js" defer></script>
+<script src="assets/js/sound.js" defer></script>
+<script src="assets/js/os.js" defer></script>
+<script src="assets/js/hub.js" defer></script>
+</body>
+</html>

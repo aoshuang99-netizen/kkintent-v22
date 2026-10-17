@@ -1,0 +1,33 @@
+### hub,lang
+{"total":60,"pass":60,"fail":0,"unsupported":0,"info":0,"ms":19417}
+exit=0
+### n,s,cross
+{"total":150,"pass":150,"fail":0,"unsupported":0,"info":5,"ms":12457}
+exit=0
+### sound,contract,retain
+{"total":47,"pass":47,"fail":0,"unsupported":0,"info":0,"ms":12243}
+exit=0
+### site,rm,fb
+{"total":53,"pass":53,"fail":0,"unsupported":0,"info":0,"ms":10507}
+exit=0
+### widths
+{"total":16,"pass":16,"fail":0,"unsupported":0,"info":4,"ms":13497}
+exit=0
+### appbar
+{"total":21,"pass":21,"fail":0,"unsupported":0,"info":0,"ms":8908}
+exit=0
+### mob,zoom
+{"total":75,"pass":75,"fail":0,"unsupported":0,"info":4,"ms":11256}
+exit=0
+### touch
+{"total":91,"pass":91,"fail":0,"unsupported":0,"info":20,"ms":59558}
+exit=0
+### seo
+{"total":35,"pass":35,"fail":0,"unsupported":0,"info":0,"ms":5908}
+exit=0
+### nav
+{"total":16,"pass":16,"fail":0,"unsupported":0,"info":0,"ms":8541}
+exit=0
+### navclosure
+{"total":23,"pass":23,"fail":0,"unsupported":0,"info":0,"ms":15001}
+exit=0

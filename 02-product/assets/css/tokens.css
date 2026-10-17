@@ -1,0 +1,187 @@
+/* ============================================================================
+   KK Intent OS · Design tokens
+   Two new concepts sharing one OS shell:
+     compile    (N) — 编译之境   : intent -> an assembled 3D pipeline
+     anticipate (S) — 先觉之境   : the field answers before you finish typing
+
+   Disciplines honoured here (same bar as the A/B/C/H round):
+     - type scale is exactly 6 steps, min 12px, ratio >= 1.25 between neighbours
+     - every interactive control is >= 44px tall  (--touch)
+     - motion is opt-out  (prefers-reduced-motion)
+     - no colour is used as the ONLY carrier of meaning
+   ========================================================================== */
+
+:root {
+  /* ---- type scale: 6 steps ---- */
+  --fs-12: 0.75rem;
+  --fs-14: 0.875rem;
+  --fs-16: 1rem;
+  --fs-20: 1.25rem;
+  --fs-28: 1.75rem;
+  --fs-44: clamp(2rem, 5.4vw, 2.75rem);
+
+  --lh-tight: 1.14;
+  --lh-body: 1.62;
+
+  --f-sans: "Inter", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", "SFMono-Regular", "Cascadia Mono", Consolas, "Liberation Mono", monospace;
+
+  /* ---- spacing ---- */
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px;
+  --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px;
+
+  /* ---- radii / elevation ---- */
+  --r-s: 10px; --r-m: 16px; --r-l: 24px; --r-full: 999px;
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, .3);
+  --shadow-2: 0 14px 36px rgba(0, 0, 0, .4);
+  --shadow-3: 0 28px 72px rgba(0, 0, 0, .55);
+
+  /* ---- interaction ---- */
+  --touch: 44px;
+  --focus-w: 2px;
+  --dur-fast: 120ms;
+  --dur: 200ms;
+  --dur-slow: 340ms;
+  --ease: cubic-bezier(.22, .61, .36, 1);
+
+  /* ---- OS stacking contract (must match docs/SPEC_*.md §layers) ---- */
+  --z-field: 1;    /* bottom WebGL canvas, pointer-events:none                    */
+  --z-stage: 10;   /* 2D interaction stage                                        */
+  --z-hud: 100;    /* floating frosted HUD bar + account chip                     */
+  --z-sheet: 200;  /* modal sheets / drawers                                      */
+  --z-toast: 300;  /* boundary / consent toasts                                   */
+
+  /* ---- layout ---- */
+  --hud-h: 64px;
+  --hud-inset: 20px;
+  --gutter: 20px;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-t: env(safe-area-inset-top, 0px);
+}
+
+/* ---------------------------------------------------------------------------
+   Concept N — compile / 编译之境
+   近黑石墨 · 结构靛蓝 · 成果薄荷 · 警戒玫粉（仅用于"情绪警戒信号"语义）
+   ------------------------------------------------------------------------ */
+[data-concept="compile"] {
+  --bg: #070A10;
+  --bg-deep: #04060A;
+  --surface: rgba(14, 20, 32, .62);
+  --surface-2: rgba(20, 28, 44, .72);
+  --elev: #16203A;
+  --glass: rgba(7, 10, 16, .58);
+  --glass-edge: rgba(255, 255, 255, .08);
+
+  --text: #F2F6FA;
+  --text-soft: #A7B6C7;
+  --text-faint: #74838F;
+
+  --accent: #5FE3C8;        /* mint  — 成果 / 就绪 */
+  --accent-ink: #032A24;
+  --accent-2: #6274E8;      /* indigo — 结构 / 依存 */
+  --signal: #FF5C93;        /* rose  — 警戒信号 ONLY (never decoration) */
+  --warn: #F4BE6B;          /* amber — 审批语义 ONLY */
+
+  --line: rgba(255, 255, 255, .09);
+  --line-strong: rgba(95, 227, 200, .34);
+  --radius-card: 16px;
+
+  /* field shader uniforms, consumed by assets/js/field.js */
+  --field-a: #2A3D7A;       /* calm spectrum   */
+  --field-b: #FF5C93;       /* alert spectrum  */
+}
+
+/* ---------------------------------------------------------------------------
+   Concept S — anticipate / 先觉之境
+   墨黑 · 雾紫 · 冷青双色调 · 圆润 pill 几何（与 N 的方角结构区分）
+   ------------------------------------------------------------------------ */
+[data-concept="anticipate"] {
+  --bg: #0A0810;
+  --bg-deep: #060509;
+  --surface: rgba(22, 18, 34, .6);
+  --surface-2: rgba(30, 25, 46, .72);
+  --elev: #241C3C;
+  --glass: rgba(10, 8, 16, .56);
+  --glass-edge: rgba(255, 255, 255, .08);
+
+  --text: #F5F2FA;
+  --text-soft: #B3AAC6;
+  --text-faint: #7C7490;
+
+  --accent: #A78BFA;        /* violet  — 预判 / 先觉 */
+  --accent-ink: #170A33;
+  --accent-2: #5FE3C8;      /* teal    — 已确认 / 落定 */
+  --signal: #FF7A9C;
+  --warn: #F4BE6B;
+
+  --line: rgba(255, 255, 255, .09);
+  --line-strong: rgba(167, 139, 250, .36);
+  --radius-card: 24px;
+
+  --field-a: #4B3A9E;
+  --field-b: #FF7A9C;
+}
+
+/* Neutral palette for the hub / reference-audit page (no concept bias) */
+[data-concept="hub"] {
+  --bg: #080B11;
+  --bg-deep: #05070B;
+  --surface: rgba(18, 24, 34, .66);
+  --surface-2: rgba(24, 31, 43, .74);
+  --elev: #1B2432;
+  --glass: rgba(8, 11, 17, .6);
+  --glass-edge: rgba(255, 255, 255, .08);
+
+  --text: #F0F4F8;
+  --text-soft: #A6B2C2;
+  --text-faint: #74808F;
+
+  --accent: #7FA6F0;
+  --accent-ink: #08111F;
+  --accent-2: #5FE3C8;
+  --signal: #FF7A9C;
+  --warn: #F4BE6B;
+
+  --line: rgba(255, 255, 255, .09);
+  --line-strong: rgba(127, 166, 240, .38);
+  --radius-card: 16px;
+
+  --field-a: #33477F;
+  --field-b: #7FA6F0;
+}
+
+/* ---------------------------------------------------------------------------
+   The long-scroll surface — 意图操作系统 marketing page
+   Carries the CHOSEN direction (S · anticipate), so it takes S's palette and
+   adds one thing a scrolling document needs that a view-router does not:
+   a measured reading column (--read) and a sticky rail height.
+   ------------------------------------------------------------------------ */
+[data-concept="site"] {
+  --bg: #09070F;
+  --bg-deep: #050408;
+  --surface: rgba(24, 19, 36, .58);
+  --surface-2: rgba(33, 27, 50, .74);
+  --elev: #241C3C;
+  --glass: rgba(9, 7, 15, .66);
+  --glass-edge: rgba(255, 255, 255, .08);
+
+  --text: #F5F2FA;
+  --text-soft: #B3AAC6;
+  --text-faint: #7C7490;
+
+  --accent: #A78BFA;
+  --accent-ink: #170A33;
+  --accent-2: #5FE3C8;
+  --signal: #FF7A9C;
+  --warn: #F4BE6B;
+
+  --line: rgba(255, 255, 255, .09);
+  --line-strong: rgba(167, 139, 250, .36);
+  --radius-card: 24px;
+
+  --field-a: #4B3A9E;
+  --field-b: #FF7A9C;
+
+  --read: 66ch;        /* the reading measure for long-form copy */
+  --rail-h: 56px;      /* scroll-progress rail */
+}

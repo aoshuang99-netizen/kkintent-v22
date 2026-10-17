@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en-US" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="data:,">
+<title data-i18n="site.docTitle">Intent OS — an operating system for intent (KKmatch, preview)</title>
+<meta name="description" content="The long-scroll surface for the chosen direction: a typist that only finishes the sentence you started, and a board where intents keep their own state. Static preview, DEMO data, nothing connected.">
+<link rel="canonical" href="https://kkmatch.com/v22/preview/site/">
+
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/os.css">
+<link rel="stylesheet" href="../../assets/css/concept-site.css">
+</head>
+<body data-concept="site" data-view="home" data-field-backend="idle" data-st="off">
+
+<a class="skip-link" href="#st-main" data-i18n="site.skip">Skip to content</a>
+
+<!-- layer 1 · the field (shared renderer, same one the previews use) -->
+<canvas id="field" class="field-canvas" aria-hidden="true"></canvas>
+<div class="field-fallback" aria-hidden="true"></div>
+
+<!-- layer 100 · the rail.
+     NOTE: this deliberately does NOT use the shell's `[data-testid="hud"]`
+     slot. `KK.os.boot()` clears and rebuilds that slot into the OS HUD — a
+     workspace selector and an account chip, which are wrong for a marketing
+     document. The shell treats the slot as optional, so leaving it out gives
+     this surface its own rail without forking the shell. -->
+<header class="st-rail" data-testid="site-rail">
+  <span class="st-rail__brand" data-testid="site-brand">
+    <span data-i18n="site.rail.brand">KKmatch</span>
+    <small data-i18n="site.rail.sub">· Intent OS</small>
+  </span>
+  <span class="st-rail__spacer"></span>
+  <button class="btn btn--ghost" type="button" data-testid="sound-btn" data-i18n-aria="sound.aria" data-i18n="sound.off">Sound: off</button>
+  <button class="btn btn--ghost" type="button" data-testid="lang-btn" data-i18n-aria="hud.langAria" data-i18n="hud.lang">中文</button>
+  <div class="st-rail__track" role="progressbar" aria-label="Reading progress" data-i18n-aria="site.rail.progress" aria-valuemin="0" aria-valuemax="100">
+    <div class="st-rail__bar" data-testid="site-progress"></div>
+  </div>
+</header>
+
+<!-- the view router in the shell needs a stage to mount into; on this surface
+     there is exactly one view, and the scroll does the navigating. -->
+<div class="shell">
+  <main class="st-main" id="st-main" data-testid="stage" data-view="home" tabindex="-1">
+
+    <!-- ================================================================ hero -->
+    <section class="st-sec st-hero" id="st-hero">
+      <span class="st-sec__eyebrow" data-i18n="site.rail.sub">· Intent OS</span>
+      <h1 data-testid="site-h1">
+        <span data-i18n="site.hero.h1">An operating system for intent.</span>
+        <span class="sub" data-i18n="site.hero.sub"></span>
+      </h1>
+      <p class="st-hero__lede" data-i18n="site.hero.lede"></p>
+      <div class="st-hero__cta">
+        <a class="btn btn--primary" href="../intent/anticipate/" data-i18n="site.foot.openS">Open the main line</a>
+        <a class="btn" href="../intent/compile/" data-i18n="site.foot.openN">Open the archived reference</a>
+        <a class="btn btn--ghost" href="../../" data-i18n="site.foot.back">Back to the hub</a>
+      </div>
+
+      <!-- the one interactive thing above the fold, and it runs the real adapter -->
+      <div class="st-demo reveal">
+        <span class="st-demo__label" data-i18n="site.demo.label"></span>
+        <div class="st-demo__frame">
+          <div class="st-demo__ghost" data-testid="site-ghost" aria-hidden="true" hidden>
+            <span class="typed"></span><span class="tail"></span>
+          </div>
+          <textarea class="composer__input" id="site-input" data-testid="site-input" rows="3"
+                    spellcheck="false" autocomplete="off" data-i18n-ph="site.demo.ph"></textarea>
+        </div>
+        <div class="st-demo__row">
+          <span class="chip" data-i18n="site.demo.hint"></span>
+          <span class="chip" data-tone="warn">notAModel</span>
+        </div>
+        <p class="st-demo__out" data-testid="site-out" data-state="idle"></p>
+      </div>
+    </section>
+
+    <!-- ================================================================= why -->
+    <section class="st-sec" id="st-why">
+      <span class="st-sec__eyebrow reveal" data-i18n="site.why.eyebrow"></span>
+      <h2 class="reveal" data-i18n="site.why.h2"></h2>
+      <p class="reveal" data-i18n="site.why.p1"></p>
+      <p class="reveal" data-i18n="site.why.p2"></p>
+      <p class="reveal" data-i18n="site.why.p3"></p>
+    </section>
+
+    <!-- ================================================================= how -->
+    <section class="st-sec" id="st-how">
+      <span class="st-sec__eyebrow reveal" data-i18n="site.how.eyebrow"></span>
+      <h2 class="reveal" data-i18n="site.how.h2"></h2>
+      <p class="reveal" data-i18n="site.how.hint"></p>
+
+      <!-- The pin. ScrollTrigger holds this block while the four states scrub,
+           then releases it. Without ScrollTrigger the <ol> is simply a list. -->
+      <div class="st-pin" id="st-steps-pin">
+        <ol class="st-steps" id="st-steps">
+          <li class="st-step" data-active="false">
+            <div>
+              <h3 data-i18n="site.step1.h"></h3>
+              <p data-i18n="site.step1.p"></p>
+            </div>
+          </li>
+          <li class="st-step" data-active="false">
+            <div>
+              <h3 data-i18n="site.step2.h"></h3>
+              <p data-i18n="site.step2.p"></p>
+            </div>
+          </li>
+          <li class="st-step" data-active="false">
+            <div>
+              <h3 data-i18n="site.step3.h"></h3>
+              <p data-i18n="site.step3.p"></p>
+            </div>
+          </li>
+          <li class="st-step" data-active="false">
+            <div>
+              <h3 data-i18n="site.step4.h"></h3>
+              <p data-i18n="site.step4.p"></p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============================================================ what is real -->
+    <section class="st-sec" id="st-real">
+      <span class="st-sec__eyebrow reveal" data-i18n="site.real.eyebrow"></span>
+      <h2 class="reveal" data-i18n="site.real.h2"></h2>
+      <p class="reveal" data-i18n="site.real.p"></p>
+      <details class="boundary reveal" data-testid="boundary" open>
+        <summary data-i18n="site.real.boundary">Capability boundary</summary>
+        <div class="boundary__body" data-testid="boundary-body"></div>
+      </details>
+    </section>
+
+    <!-- ============================================================= contract -->
+    <section class="st-sec" id="st-contract-sec">
+      <span class="st-sec__eyebrow reveal" data-i18n="site.contract.eyebrow"></span>
+      <h2 class="reveal" data-i18n="site.contract.h2"></h2>
+      <p class="reveal" data-i18n="site.contract.p"></p>
+      <div class="reveal" data-testid="site-contract"></div>
+    </section>
+
+    <!-- ================================================================= next -->
+    <section class="st-sec" id="st-next">
+      <span class="st-sec__eyebrow reveal" data-i18n="site.next.eyebrow"></span>
+      <h2 class="reveal" data-i18n="site.next.h2"></h2>
+      <p class="reveal" data-i18n="site.next.p"></p>
+      <nav class="st-foot" aria-label="Preview links">
+        <a class="btn btn--primary" href="../intent/anticipate/" data-i18n="site.foot.openS"></a>
+        <a class="btn" href="../intent/compile/" data-i18n="site.foot.openN"></a>
+        <a class="btn btn--ghost" href="../../" data-i18n="site.foot.back"></a>
+      </nav>
+      <p class="st-fineprint" data-i18n="site.fineprint"></p>
+    </section>
+
+  </main>
+</div>
+
+<!-- The only overlay this surface needs. The shell's modal sheets are for
+     approval gates and the console; a marketing page has neither, and the
+     shell no-ops cleanly when their slots are absent. -->
+<div class="toaster" data-testid="toaster" aria-live="polite"></div>
+
+<noscript>
+  <section style="padding:120px 20px;max-width:66ch;margin:0 auto;color:#B3AAC6">
+    <h1 style="color:#F5F2FA;font-size:2rem;line-height:1.15">An operating system for intent.</h1>
+    <p>You do not need another place to type. You need the thing you meant to
+    still be there when you look up.</p>
+    <p>This page is a static preview and needs JavaScript for its live
+    completion demo. With JavaScript off it shows this text rather than a
+    fake screen: there is no backend here, no account, and no model.</p>
+    <p><a style="color:#A78BFA" href="../intent/anticipate/">Open the main line (anticipate)</a> ·
+       <a style="color:#A78BFA" href="../intent/compile/">Open the archived reference (compile)</a> ·
+       <a style="color:#A78BFA" href="../../">Back to the hub</a></p>
+  </section>
+</noscript>
+
+<!-- ScrollTrigger 3.12.5 is vendored into this bundle, identical to the copy
+     the rest of the project uses. It loads local, never from a CDN. -->
+<script src="../../assets/vendor/three.min.js" defer></script>
+<script src="../../assets/vendor/gsap.min.js" defer></script>
+<script src="../../assets/vendor/ScrollTrigger.min.js" defer></script>
+<script src="../../assets/js/i18n.js" defer></script>
+<script src="../../assets/js/i18n-shared.js" defer></script>
+<script src="../../assets/js/i18n-site.js" defer></script>
+<script src="../../assets/js/store.js" defer></script>
+<script src="../../assets/js/adapters.js" defer></script>
+<script src="../../assets/js/field.js" defer></script>
+<script src="../../assets/js/sound.js" defer></script>
+<script src="../../assets/js/os.js" defer></script>
+<script src="../../assets/js/concept-site.js" defer></script>
+</body>
+</html>

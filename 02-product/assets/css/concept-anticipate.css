@@ -1,0 +1,133 @@
+/* ============================================================================
+   KK Intent OS · concept S — anticipate / 先觉之境
+   Rounded geometry, drifting cards, a prediction you can argue with.
+   ========================================================================== */
+
+.s-field {
+  width: min(100%, 720px);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
+.s-title {
+  font-size: var(--fs-28);
+  line-height: 1.24;
+  letter-spacing: -0.01em;
+  font-weight: 800;
+}
+.s-title span { display: block; }
+.s-title .sub {
+  margin-top: var(--s-2);
+  font-size: var(--fs-14);
+  font-weight: 400;
+  line-height: var(--lh-body);
+  color: var(--text-soft);
+}
+
+/* ---- the prediction panel ---- */
+.s-predict {
+  border: 1px solid var(--line);
+  border-radius: var(--r-l);
+  background: var(--surface);
+  padding: var(--s-4);
+  display: none;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+.s-predict[data-show="true"] { display: flex; }
+.s-predict__head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); }
+.s-basis { display: flex; flex-direction: column; gap: 4px; }
+.s-basis li {
+  font-size: var(--fs-12);
+  color: var(--text-soft);
+  display: flex;
+  gap: var(--s-2);
+}
+.s-basis li::before { content: "·"; color: var(--accent); }
+.s-basis-title { font-family: var(--f-mono); font-size: var(--fs-12); color: var(--text-faint); }
+.s-meter {
+  height: 6px;
+  border-radius: var(--r-full);
+  background: color-mix(in srgb, var(--text) 12%, transparent);
+  overflow: hidden;
+}
+.s-meter > i { display: block; height: 100%; background: var(--accent); width: 0; }
+
+/* ---- orbit board ---- */
+.s-board {
+  position: relative;
+  min-height: 480px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-l);
+  background:
+    radial-gradient(60% 50% at 30% 20%, color-mix(in srgb, var(--accent) 10%, transparent) 0%, transparent 70%),
+    color-mix(in srgb, var(--bg-deep) 60%, transparent);
+  overflow: hidden;
+}
+.s-card {
+  position: absolute;
+  top: 0; left: 0;
+  width: 252px;
+  padding: var(--s-4);
+  border: 1px solid var(--line);
+  border-radius: var(--r-l);
+  background: var(--surface-2);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-2);
+  will-change: transform;
+  touch-action: none;
+}
+.s-card[data-parked="true"] { opacity: .52; border-style: dashed; }
+.s-card[data-confirmed="true"] { border-color: var(--accent); border-left: 3px solid var(--accent); }
+.s-card[data-dragging="true"] { box-shadow: var(--shadow-3); cursor: grabbing; z-index: 5; }
+.s-card__text { font-size: var(--fs-14); line-height: 1.5; }
+.s-card__meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: var(--s-2); }
+.s-card__acts { display: flex; gap: var(--s-2); margin-top: var(--s-3); }
+.s-card__acts .btn { flex: 1 1 auto; font-size: var(--fs-12); padding: 0 var(--s-2); }
+.s-dock {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2) var(--s-3);
+  margin-bottom: var(--s-3);
+}
+.s-hint { font-size: var(--fs-12); color: var(--text-faint); }
+
+/* List mode: identical DOM, motion off, nothing hidden. */
+.s-board[data-mode="list"] { min-height: 0; padding: var(--s-3); }
+.s-board[data-mode="list"] .s-card {
+  position: static;
+  transform: none !important;
+  width: auto;
+  margin-bottom: var(--s-2);
+  box-shadow: none;
+}
+.s-board[data-mode="list"] .s-card__acts { flex-wrap: wrap; }
+
+/* ---- ledger ---- */
+.s-ledger { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--s-4); align-items: start; }
+.s-col { display: flex; flex-direction: column; gap: var(--s-2); }
+.s-row {
+  border: 1px solid var(--line);
+  border-radius: var(--r-s);
+  padding: var(--s-3);
+  background: color-mix(in srgb, var(--elev) 28%, transparent);
+}
+.s-row__head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); }
+.s-row__body { font-size: var(--fs-12); color: var(--text-soft); margin-top: 4px; overflow-wrap: anywhere; }
+.s-empty { font-size: var(--fs-12); color: var(--text-faint); }
+.s-bar {
+  display: flex; align-items: center; gap: var(--s-2);
+  font-family: var(--f-mono); font-size: var(--fs-12);
+}
+.s-bar > i {
+  display: block; height: 6px; border-radius: var(--r-full);
+  background: var(--accent-2); min-width: 2px;
+}
+
+@media (max-width: 719px) {
+  .s-board { min-height: 640px; }
+  .s-card { width: min(76vw, 252px); }
+}

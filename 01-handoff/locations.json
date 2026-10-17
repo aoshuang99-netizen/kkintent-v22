@@ -1,0 +1,242 @@
+{
+  "release": "kk-intent-os-v22-round8",
+  "measured_on": "2026-10-17",
+  "version_control": {
+    "git": false,
+    "evidence": [
+      "git -C kkintent_public rev-parse --is-inside-work-tree -> fatal: not a git repository",
+      "git -C /opt/kk-match/frontend/v22 rev-parse --is-inside-work-tree -> fatal: not a git repository",
+      "git -C /opt/kk-match rev-parse --is-inside-work-tree -> fatal: not a git repository"
+    ],
+    "identity": "content hash (sha256), not commit sha",
+    "do_not": "git init inside the nginx web root: .git/ would be served at https://kkmatch.com/v22/.git/config"
+  },
+  "copies": [
+    {
+      "role": "source-of-truth (code + gate + docs)",
+      "kind": "local-directory",
+      "path": "C://Users//AS//WorkBuddy//20260420163622//kkintent_public",
+      "files": 67,
+      "bytes": 7343948
+    },
+    {
+      "role": "served",
+      "kind": "remote-directory",
+      "host": "129.211.8.167",
+      "path": "/opt/kk-match/frontend/v22",
+      "files": 30,
+      "served_by": "nginx, root /opt/kk-match/frontend, location ^~ /v22/",
+      "deploy_method": "copy file into the directory; effective on next request; no restart, no reload, no docker cp"
+    }
+  ],
+  "not_served_on_production": {
+    "count": 37,
+    "reason": "gate + documentation live outside the web root",
+    "paths": [
+      "README.md",
+      "docs/DECISIONS.md",
+      "docs/DELIVERY.md",
+      "docs/REFERENCE_AUDIT.md",
+      "docs/SOURCE_REVIEW.md",
+      "docs/SPEC_ANTICIPATE.md",
+      "docs/SPEC_COMPILE.md",
+      "docs/shots/bar-desktop-1440-en.png",
+      "docs/shots/bar-phone-320-zh.png",
+      "docs/shots/bar-phone-390-en.png",
+      "docs/shots/bar-tablet-834-en.png",
+      "docs/shots/hub-en.png",
+      "docs/shots/hub-zh.png",
+      "docs/shots/lang-1-default-on-a-chinese-browser.png",
+      "docs/shots/lang-2-after-choosing-chinese.png",
+      "docs/shots/lang-3-anticipate-in-chinese.png",
+      "docs/shots/n-frame-en.png",
+      "docs/shots/n-log-en.png",
+      "docs/shots/n-log-with-receipts-en.png",
+      "docs/shots/n-pipeline-css-fallback.png",
+      "docs/shots/n-pipeline-en.png",
+      "docs/shots/n-pipeline-mobile.png",
+      "docs/shots/s-field-ghost-en.png",
+      "docs/shots/s-field-zh.png",
+      "docs/shots/s-ledger-en.png",
+      "docs/shots/s-orbits-en.png",
+      "docs/shots/s-orbits-mobile.png",
+      "docs/shots/s-orbits-reduced-motion.png",
+      "docs/shots/site-contract-en.png",
+      "docs/shots/site-hero-en.png",
+      "docs/shots/site-hero-zh.png",
+      "docs/shots/site-steps-pinned-en.png",
+      "e2e/acceptance.js",
+      "e2e/mobile-fidelity.js",
+      "e2e/probe-deep.js",
+      "e2e/probe-round3.js",
+      "e2e/probe-smoke.js"
+    ]
+  },
+  "origins": [
+    {
+      "name": "production",
+      "base": "https://kkmatch.com/v22",
+      "verified_identical": 30,
+      "verified_different": 0,
+      "verified_absent": 37,
+      "sections_available": [
+        "hub",
+        "lang",
+        "n",
+        "s",
+        "sound",
+        "contract",
+        "retain",
+        "site",
+        "rm",
+        "fb",
+        "widths",
+        "appbar",
+        "touch",
+        "mob",
+        "zoom",
+        "cross",
+        "seo",
+        "nav",
+        "navclosure"
+      ],
+      "gate": {
+        "executed": 587,
+        "pass": 587,
+        "fail": 0,
+        "info": 33,
+        "per_section": {
+          "hub,lang": {
+            "total": 60,
+            "info": 0
+          },
+          "n,s,cross": {
+            "total": 150,
+            "info": 5
+          },
+          "sound,contract,retain": {
+            "total": 47,
+            "info": 0
+          },
+          "site,rm,fb": {
+            "total": 53,
+            "info": 0
+          },
+          "widths": {
+            "total": 16,
+            "info": 4
+          },
+          "appbar": {
+            "total": 21,
+            "info": 0
+          },
+          "mob,zoom": {
+            "total": 75,
+            "info": 4
+          },
+          "touch": {
+            "total": 91,
+            "info": 20
+          },
+          "seo": {
+            "total": 35,
+            "info": 0
+          },
+          "nav": {
+            "total": 16,
+            "info": 0
+          },
+          "navclosure": {
+            "total": 23,
+            "info": 0
+          }
+        }
+      }
+    },
+    {
+      "name": "share-link",
+      "base": "https://kkmatch-gcai-preview.app.workbuddy.host",
+      "verified_identical": 67,
+      "verified_different": 0,
+      "verified_absent": 0,
+      "sections_skipped": [
+        "seo",
+        "nav"
+      ],
+      "skip_reason": "seo reads nginx response headers; nav compares against the real homepage at / — neither exists here",
+      "gate": {
+        "executed": 536,
+        "pass": 536,
+        "fail": 0,
+        "info": 33,
+        "sections_measured": "9 of 11 — hub,lang / n,s,cross / sound,contract,retain / site,rm,fb / widths / appbar / mob,zoom / touch / navclosure",
+        "per_section": {
+          "hub,lang": {
+            "total": 60,
+            "info": 0
+          },
+          "n,s,cross": {
+            "total": 150,
+            "info": 5
+          },
+          "sound,contract,retain": {
+            "total": 47,
+            "info": 0
+          },
+          "site,rm,fb": {
+            "total": 53,
+            "info": 0
+          },
+          "widths": {
+            "total": 16,
+            "info": 4
+          },
+          "appbar": {
+            "total": 21,
+            "info": 0
+          },
+          "mob,zoom": {
+            "total": 75,
+            "info": 4
+          },
+          "touch": {
+            "total": 91,
+            "info": 20
+          },
+          "navclosure": {
+            "total": 23,
+            "info": 0
+          }
+        }
+      }
+    }
+  ],
+  "urls": {
+    "production": {
+      "door": "https://kkmatch.com/v22/",
+      "door_note": "HTTP 200 HTML that forwards to anticipate in JS and carries a noscript meta refresh; NOT a 3xx",
+      "hub": "https://kkmatch.com/v22/hub/",
+      "anticipate": "https://kkmatch.com/v22/preview/intent/anticipate/",
+      "compile": "https://kkmatch.com/v22/preview/intent/compile/",
+      "site": "https://kkmatch.com/v22/preview/site/",
+      "sitemap": "https://kkmatch.com/sitemap.xml"
+    },
+    "share": {
+      "root": "https://kkmatch-gcai-preview.app.workbuddy.host/",
+      "hub": "https://kkmatch-gcai-preview.app.workbuddy.host/hub/",
+      "anticipate": "https://kkmatch-gcai-preview.app.workbuddy.host/preview/intent/anticipate/",
+      "compile": "https://kkmatch-gcai-preview.app.workbuddy.host/preview/intent/compile/",
+      "site": "https://kkmatch-gcai-preview.app.workbuddy.host/preview/site/",
+      "gate": "https://kkmatch-gcai-preview.app.workbuddy.host/e2e/acceptance.js"
+    }
+  },
+  "backups_on_host": [
+    "/opt/kk-match/frontend/v22.bak_r6_20261016_204204",
+    "/opt/kk-match/frontend/v22.bak_r7_20261017_111643",
+    "/opt/kk-match/frontend/v22.bak_hubroot_20261017_0428",
+    "/opt/kk-match/frontend/sitemap.xml.bak_r6_20261016_204306",
+    "/opt/kk-match/frontend/sitemap.xml.bak_hubroot_20261017"
+  ],
+  "manifest": "manifests/manifest_local.tsv  (sha256\\tbytes\\tpath, 67 rows)",
+  "manifest_sha256": "8788f19db783912ae5bb78bd8ca632297978c42a865e666b3f072e26825f27d0"
+}

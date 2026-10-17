@@ -1,0 +1,52 @@
+{
+ "prod": {
+  "identical": 30,
+  "different": 0,
+  "missing": 37,
+  "detail": {
+   "README.md": "ERR",
+   "docs/DECISIONS.md": "ERR",
+   "docs/DELIVERY.md": "ERR",
+   "docs/REFERENCE_AUDIT.md": "ERR",
+   "docs/SOURCE_REVIEW.md": "ERR",
+   "docs/SPEC_ANTICIPATE.md": "ERR",
+   "docs/SPEC_COMPILE.md": "ERR",
+   "docs/shots/bar-desktop-1440-en.png": "ERR",
+   "docs/shots/bar-phone-320-zh.png": "ERR",
+   "docs/shots/bar-phone-390-en.png": "ERR",
+   "docs/shots/bar-tablet-834-en.png": "ERR",
+   "docs/shots/hub-en.png": "ERR",
+   "docs/shots/hub-zh.png": "ERR",
+   "docs/shots/lang-1-default-on-a-chinese-browser.png": "ERR",
+   "docs/shots/lang-2-after-choosing-chinese.png": "ERR",
+   "docs/shots/lang-3-anticipate-in-chinese.png": "ERR",
+   "docs/shots/n-frame-en.png": "ERR",
+   "docs/shots/n-log-en.png": "ERR",
+   "docs/shots/n-log-with-receipts-en.png": "ERR",
+   "docs/shots/n-pipeline-css-fallback.png": "ERR",
+   "docs/shots/n-pipeline-en.png": "ERR",
+   "docs/shots/n-pipeline-mobile.png": "ERR",
+   "docs/shots/s-field-ghost-en.png": "ERR",
+   "docs/shots/s-field-zh.png": "ERR",
+   "docs/shots/s-ledger-en.png": "ERR",
+   "docs/shots/s-orbits-en.png": "ERR",
+   "docs/shots/s-orbits-mobile.png": "ERR",
+   "docs/shots/s-orbits-reduced-motion.png": "ERR",
+   "docs/shots/site-contract-en.png": "ERR",
+   "docs/shots/site-hero-en.png": "ERR",
+   "docs/shots/site-hero-zh.png": "ERR",
+   "docs/shots/site-steps-pinned-en.png": "ERR",
+   "e2e/acceptance.js": "ERR",
+   "e2e/mobile-fidelity.js": "ERR",
+   "e2e/probe-deep.js": "ERR",
+   "e2e/probe-round3.js": "ERR",
+   "e2e/probe-smoke.js": "ERR"
+  }
+ },
+ "share": {
+  "identical": 67,
+  "different": 0,
+  "missing": 0,
+  "detail": {}
+ }
+}

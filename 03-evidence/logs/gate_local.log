@@ -1,0 +1,24 @@
+### hub,lang
+{"total":58,"pass":58,"fail":0,"unsupported":0,"info":0,"ms":17491}
+exit=0
+### n,s,cross
+{"total":150,"pass":150,"fail":0,"unsupported":0,"info":5,"ms":12156}
+exit=0
+### sound,contract,retain
+{"total":47,"pass":47,"fail":0,"unsupported":0,"info":0,"ms":10803}
+exit=0
+### site,rm,fb
+{"total":53,"pass":53,"fail":0,"unsupported":0,"info":0,"ms":9400}
+exit=0
+### widths
+{"total":16,"pass":16,"fail":0,"unsupported":0,"info":4,"ms":12548}
+exit=0
+### appbar
+{"total":21,"pass":21,"fail":0,"unsupported":0,"info":0,"ms":7640}
+exit=0
+### mob,zoom
+{"total":75,"pass":75,"fail":0,"unsupported":0,"info":4,"ms":10061}
+exit=0
+### touch
+{"total":91,"pass":91,"fail":0,"unsupported":0,"info":20,"ms":42239}
+exit=0
